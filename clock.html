@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>模拟时钟</title>
+	</head>
+	<body>
+		<canvas id="clock" width="500" height="500">
+			您的浏览器不支持canvas标签，无法看到时钟
+		</canvas>
+		<script type="text/javascript">
+			var clock=document.getElementById("clock");
+			var ctx=clock.getContext("2d");
+	
+			function moveClock(){
+				ctx.clearRect(0,0,500,500);//清除整个画板
+				/*clearRect(x,y,width,heigt)：清除指定的矩形区块（绘制一个透明的矩形）
+参数： x,y是矩形左上角的坐标，width就是矩形的宽度，height:矩形的高度。*/
+				var now=new Date();
+				var sec=now.getSeconds();
+				var min=now.getMinutes();
+				var hour=now.getHours();
+				hour=hour+min/60;
+				hour=hour>12?hour-12:hour;
+				
+				//表盘
+				ctx.lineWidth=12;
+				ctx.strokeStyle="burlywood";
+				ctx.beginPath();
+				ctx.arc(250,250,200,0,Math.PI*2,true);//逆时针画一个半径为200的圆
+				ctx.closePath();
+				ctx.stroke();
+			
+				//时刻度
+				for(var i=0;i<12;i++){
+					ctx.save();//先把画板的状态保存一下
+					ctx.lineWidth=9;
+					ctx.strokeStyle="coral";
+					ctx.translate(250,250);//在异次元空间重置0,0,点的位置
+					ctx.rotate(i*30*Math.PI/180);//设置画板的逆时针旋转弧度，就这样原地不动转着画板把一个个时刻度画上去
+					ctx.beginPath();
+					ctx.moveTo(0,-170);//因为重新定过0,0的位置
+					ctx.lineTo(0,-190);//y越往下越大
+					ctx.closePath();
+					ctx.stroke();//画线
+					ctx.restore();//画板恢复save()时的样子
+				}
+			
+				//分刻度
+				for(var i=0;i<60;i++){
+					if(i%5!=0){//分针与时针不重合时再画线
+						ctx.save();
+						ctx.lineWidth=6;
+						ctx.strokeStyle="cornflowerblue";
+						ctx.translate(250,250);
+						ctx.rotate(i*6*Math.PI/180);//每次转6度
+						ctx.beginPath();
+						ctx.moveTo(0,-180);
+						ctx.lineTo(0,-190);
+						ctx.closePath();
+						ctx.stroke();
+						ctx.restore();
+					}
+				}	
+				//时针
+				ctx.save();
+				ctx.lineWidth=9;
+				ctx.strokeStyle="blueviolet";
+				ctx.translate(250,250);
+				ctx.rotate(hour*30*Math.PI/180);//这样画布默认是逆时针旋转，每个小时是30度
+				ctx.beginPath();
+				ctx.moveTo(0 ,-140);
+				ctx.lineTo(0,10);
+				ctx.closePath();
+				ctx.stroke();
+				ctx.restore();
+			
+				//分针
+				ctx.save();
+				ctx.lineWidth=6;
+				ctx.strokeStyle="darkcyan";
+				ctx.translate(250,250);
+				ctx.rotate(min*6*Math.PI/180);//这样画布默认是逆时针旋转,每分钟6度
+				ctx.beginPath();
+				ctx.moveTo(0 ,-160);
+				ctx.lineTo(0,15);
+				ctx.closePath();
+				ctx.stroke();
+				ctx.restore();
+			
+				//秒针(美化版)
+				ctx.save();
+				ctx.lineWidth=3;
+				ctx.strokeStyle="red";
+				ctx.translate(250,250);
+				ctx.rotate(sec*6*Math.PI/180);//这样画布默认是逆时针旋转,每秒钟6度
+				ctx.beginPath();
+				ctx.moveTo(0 ,-170);
+				ctx.lineTo(0,20);
+				ctx.closePath();
+				ctx.stroke();
+			
+				//画出时针分针秒针的交叉点
+				ctx.beginPath();
+				ctx.arc(0,0,8,0,Math.PI*2,false);
+				ctx.closePath();
+				ctx.fillStyle="aquamarine";
+				ctx.stroke();
+				ctx.fill();
+			
+				//画出秒针前段的小圆点
+				ctx.beginPath();
+				ctx.arc(0,-150,5,0,Math.PI*2,false);
+				ctx.closePath();
+				ctx.fillStyle="aqua";
+				ctx.stroke();
+				ctx.fill();
+			
+				ctx.restore();//秒针(美化版)结尾才恢复，因为之前的操作都要在画板旋转的时候进行
+				}
+			
+			//moveClock();//避免刷新时页面的短暂空白？？？
+			setInterval(moveClock,1000);
+		</script>
+	</body>
+</html>
