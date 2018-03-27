@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>输入法选项</title>
+		<style type="text/css">
+			body,ul,li,button{
+				margin:0;
+				padding:0;
+			}
+			body{
+				font:12px/1.5em Tahoma;
+			}
+			ul{
+				list-style-type:none;
+			}
+			button{
+				cursor:pointer;
+			}
+			#outer{
+				width:70px;
+				margin:10px auto;
+			}
+			#detail{
+				margin-top:5px;
+				background-color: #fff;
+				border:1px solid #9a99ff;
+				border-bottom:0px;
+				display: none;
+			}
+			#detail li{
+				width:100%;
+				line-height:24px;
+				vertical-align: top;
+				border-bottom: 1px solid #9a99ff;
+				/*li是块元素*/
+			}
+			#detail li a{
+				color: #00c;
+				padding:0 5px;
+				text-decoration: none;
+				/*行内元素默认宽度为内容的宽度，块元素默认宽度为撑满外层盒子的宽度*/
+				display:block;/*若不把a变成块元素，则a上的背景不会撑满整个li*/
+			}
+			#detail li a:hover{
+				background-color:#d9e1f6;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div id="outer">
+			<button>输入法</button>
+			<ul id="detail">
+				<li><a href="javascript:;">手写</a></li>
+				<li><a href="javascript:;">拼音</a></li>
+				<li id="close"><a href="javascript:;">关闭</a></li>
+			</ul>
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+		var btn=document.getElementsByTagName("BUTTON")[0];
+		var detail=document.getElementById("detail");
+		var close=document.getElementById("close");
+		btn.onclick=function(){
+			/*just show off......*/
+			detail.style.display=detail.style.display=="block"?"none":"block";
+		}
+		close.onclick=function(){
+			detail.style.display="none";
+		}
+	</script>
+</html>

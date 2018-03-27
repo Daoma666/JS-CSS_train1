@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>控制div属性</title>
+		<style type="text/css">
+			div.outer{
+				width: 500px;/*先指定一个宽度*/
+				margin: 0px auto;/*让这个块元素居中，前提必须给它指定宽度才行*/
+				text-align: center;/*让子元素中的内联元素居中*/
+			}
+			div#show{
+				width: 100px;
+				height: 100px;
+				background-color: black;
+				margin:10px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="outer">
+			<button id="1">变宽</button>
+			<button id="2">变高</button>
+			<button id="3">变色</button>
+			<button id="4">隐藏</button>
+			<button id="5">重置</button>
+			<div id="show"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var changeStyle=function(elem,attr,value){
+			elem.style[attr]=value;
+		};
+		var buttons=document.getElementsByTagName("BUTTON");
+		var show=document.getElementById("show");
+		var att=["width","height","background","display","display"];
+		var val=["200px","200px","red","none","block"];
+		for(var i=0;i<buttons.length;i++){
+			//alert(buttons[i].index);可以看到原先数组中每一项的index属性值undefined
+			buttons[i].index=i;
+			buttons[i].onclick=function(){
+				this.index==buttons.length-1 && (show.style.cssText="");//相当于if(到了最后一个按钮){就重置show的CSS}，这样写主要是炫技...
+				changeStyle(show,att[this.index],val[this.index]);
+			}
+		}
+	</script>
+</html>

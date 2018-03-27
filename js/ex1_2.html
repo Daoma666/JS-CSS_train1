@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>网页换肤</title>
+
+		<style type="text/css">
+			body{
+				color: white;/*color属性包含了文本和边框的颜色*/
+			}
+			a{
+				color:white;
+			}
+			a:link,a:visited{
+				text-decoration: none;
+			}
+			a:hover{
+				text-decoration: underline;
+			}
+			#red{
+				background-color: red;
+				border-color: red;
+			}
+			#green{
+				background-color: green;
+				border-color: green;
+			}
+			#blue{
+				background-color: blue;
+				border-color: blue;
+			}
+			#skin li.current{
+				background-color: white;
+			}
+			#outer{
+				margin: 10px auto;
+				width: 660px;
+			}
+			#skin,#nav{
+				list-style-type: none;	
+				overflow: hidden;/*清除浮动，恢复它原本占据的ul位置*/
+			}
+			#skin{
+				margin:5px auto;				
+			}
+			#skin li{
+				width: 10px;
+				height: 10px;
+				margin: 0px 5px;
+				float: left;
+				border-width: 5px;/*用边框达到小正方形的效果*/
+				border-style: solid;
+				cursor: pointer;	
+			}
+			#nav{/*目前学到的导航栏都是用ul做的*/
+				margin:10px auto;
+				text-align: center;
+			}
+			#nav li{
+				padding: 5px 30px;
+				float: left;/*必须指定宽度才能float*/
+				border: thin solid white;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/red.css"><!--将外部链接放到最下面，使它更特定-->
+	</head>
+	<body>
+		<div id="outer">
+			<ul id="skin">
+				<li id="red" class="current" title="红色"></li>
+				<li id="green" title="绿色"></li>
+				<li id="blue" title="蓝色"></li>
+			</ul>
+			<ul id="nav">
+				<!--
+                	javascript: 是一个伪协议javascript:是表示在触发<a>默认动作时，执行一段JavaScript代码，
+                	而 javascript:;表示什么都不执行，这样点击<a>时就没有任何反应。
+                -->
+				<li><a href="javascript:;">新闻</a></li>
+				<li><a href="javascript:;">娱乐</a></li>
+				<li><a href="javascript:;">体育</a></li>
+				<li><a href="javascript:;">电影</a></li>
+				<li><a href="javascript:;">音乐</a></li>
+				<li><a href="javascript:;">旅游</a></li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var oLink=document.getElementsByTagName("LINK")[0];
+		var oSkin=document.getElementById("skin").getElementsByTagName("LI");
+		for(var i=0;i<oSkin.length;i++){
+			oSkin[i].onclick=function(){
+				for(var p in oSkin) oSkin[p].className="";
+				this.className="current";
+				oLink["href"]="../css/"+this.id+".css";
+			}
+		}
+	</script>
+</html>

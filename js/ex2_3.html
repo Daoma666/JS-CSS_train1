@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>求出数组中所有数字的和</title>
+		<style type="text/css">
+			#outer{
+				width:500px;
+				margin:10px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<label>
+				<input type="text" value="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15">
+				<span>输入数字求和，数字之间用半角","号分隔</span>
+			</label>
+			<p><button>求和</button></p>
+			<strong style="color:red;font-size: 30px;"></strong>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var btn=document.getElementsByTagName("BUTTON")[0];
+		var input=document.getElementsByTagName("INPUT")[0];
+		var result=document.getElementsByTagName("STRONG")[0];
+		input.onkeyup=function(){
+			/*下面的正则表达式只能替换第一个出现的不是XX的字符，若长按某字符键还是会出bug，所以要给它加一个for*/
+			for(var i=0;i<this.value.length;i++){
+				/*匹配任意第一个不是数字或逗号的字符，并把它替换为空字符串*/
+				/*当^在[]里时，[^abc]代表除了...  在其它地方时代表以...开头的字符*/
+				this.value = this.value.replace(/[^(\d)|(,)]/,"");
+			}
+		}
+		btn.onclick=function(){
+			var sum=0;
+			var array=input.value.split(",");
+			for(var i=0;i<array.length;i++){
+				if(array[i]==""){
+					sum="您有俩逗号连用的输入！";
+					break;	
+				}else{
+					sum+=parseInt(array[i]);
+				}
+				
+			}
+			result.innerText=sum;
+		}
+			
+	</script>
+</html>

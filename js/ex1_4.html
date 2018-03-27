@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>用循环将三个DIV变成红色</title>
+		<style type="text/css">
+			#outer{
+				width:360px;
+				margin:10px auto;				
+			}
+			#outer div{
+				background-color: black;
+				width:100px;
+				height:100px;
+				margin:10px;
+				float:left;
+			}
+			p{
+				text-align: center;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<p><button>点击将DIV变成红色</button></p>
+		<div id="outer">
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<script type="text/javascript">
+			var btn=document.getElementsByTagName("BUTTON")[0];
+			var divs=document.getElementById("outer").getElementsByTagName("DIV");
+			btn.onclick=function(){
+				for(var i=0;i<divs.length;i++){
+					divs[i].style.backgroundColor="red";
+				}
+			}
+		</script>
+	</body>
+</html>
