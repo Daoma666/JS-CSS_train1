@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>简易选项卡</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#outer{
+				width:500px;
+				margin:20px auto;
+				border: 1px solid black;
+				
+			}
+			#outer>ul{
+				list-style-type: none;
+				background: #000;
+				color:#fff;
+			}
+			#outer>ul li{
+				display: inline-block;
+				width: 100px;
+				text-align: center;
+				font-size: 16px;
+				line-height: 30px;
+				padding: 10px 0;
+				cursor: pointer;
+				left: 0px;
+			}
+			#content>ul{
+				list-style-type: square;
+				list-style-position: inside;
+				margin:20px;
+				display: none;
+			}
+			#content>ul li{
+				margin: 10px;
+			}
+			#outer>ul li.current{
+				background-color: #CCCCCC;
+				color: #000;
+			}
+			#content>ul.current{
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<ul id="nav">
+				<li class="current">第一课</li>
+				<li>第二课</li>
+				<li>第三课</li>
+			</ul>
+			<div id="content">
+				<ul class="current">
+					<li>网页特效原理分析</li>
+					<li>响应用户操作</li>
+					<li>提示框效果</li>
+					<li>事件驱动</li>
+					<li>元素属性操作</li>
+					<li>动手编写第一个JS特效</li>
+					<li>引入函数</li>
+					<li>网页换肤效果</li>
+					<li>展开/收缩播放列表效果</li>
+				</ul>
+				<ul>
+					<li>网页特效原理分析</li>
+					<li>响应用户操作</li>
+					<li>提示框效果</li>
+					<li>事件驱动</li>
+					<li>元素属性操作</li>
+					<li>动手编写第一个JS特效</li>
+				</ul>
+				<ul>
+					<li>网页特效原理分析</li>
+					<li>响应用户操作</li>
+					<li>提示框效果</li>
+					<li>事件驱动</li>
+					<li>元素属性操作</li>
+					<li>动手编写第一个JS特效</li>
+					<li>引入函数</li>
+					<li>网页换肤效果</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var nav=document.getElementById("nav").getElementsByTagName("LI");
+		var content=document.getElementById("content").getElementsByTagName("UL");
+		for(var i=0;i<nav.length;i++){
+			nav[i].index=i;
+			nav[i].onmousemove=function(){
+				/* 这样在函数里创建的匿名函数就是个闭包
+				 * 所以闭包里的i全都引用的是活动对象中同一个变量i，
+				 * 每个函数内部i的值都是nav.length
+				 * 详情见JS高级程序设计7.2.1节
+				*/
+				for(var j=0;j<content.length;j++){
+					nav[j].className="";
+					content[j].className="";
+				}
+				this.className="current";
+				content[this.index].className="current";
+				//不能这么写,闭包导致的i此时等于nav.length，会导致找不到content[nav.length]这个元素
+				//content[i].className="current";
+			}
+		}
+	</script>
+</html>

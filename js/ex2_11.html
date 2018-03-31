@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>鼠标移过，修改图片路径(要考虑图片不能显示的处理)</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				background: black;
+			}
+			#outer{
+				width: 212px;
+				margin: 20px auto;
+				background: #fff;
+				border-radius: 5px;
+				border: 5px solid #fff;
+				border-top-width: 2px;
+				border-right-width: 0;
+				overflow: hidden;
+			}
+			ul{
+				list-style-type: none;
+			}
+			li img{
+				width: 50px;
+				height: 50px;
+				float: left;
+				margin: 3px 3px 0 0;/*布局重要的一步，仅需上右边距即可*/
+				border-radius: 5px;
+				cursor: pointer;
+			}
+			li.first,li.first img{
+				display: inline;
+				position:relative;
+				width: 156px;
+				height: 156px;
+			}
+			#loading{
+				position: absolute;
+				width: 156px;
+				height: 156px;
+				margin: 3px 3px 0 0;
+				opacity: 0.3;
+				background: #fff url(img/loading.gif) 50% 50% no-repeat;
+				/*50% 50%指的是background-position*/
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<ul>
+				<li class="first">
+					<img src="img/big_1.jpg">
+					<div id="loading" style="display: none;"></div>
+				</li>
+				<li><img src="img/small_1.jpg"></li>
+				<li><img src="img/small_2.jpg"></li>
+				<li><img src="img/small_3.jpg"></li>
+				<li><img src="img/small_4.jpg"></li>
+				<li><img src="img/small_5.jpg"></li>
+				<li><img src="img/small_6.jpg"></li>
+				<li><img src="img/small_7.jpg"></li>
+				<li><img src="img/small_8.jpg"></li>
+				<li><img src="img/small_9.jpg"></li>
+				<li><img src="img/small_10.jpg"></li>
+				<li><img src="img/small_11.jpg"></li>
+				
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var oImg=document.getElementsByTagName("IMG");
+		var loading=document.getElementById("loading");
+		/*第1张大图是用来展示的，所以i从1开始*/
+		for(var i=1;i<oImg.length;i++){
+			oImg[i].onmousemove=function(){
+				var img=new Image();
+				img.src=oImg[0].src=this.src.replace(/small/,"big");
+				loading.style.display="block";
+				img.complete?loading.style.display="none":oImg[0].onload=function(){
+					loading.style.display="none";
+				}
+			}
+		}
+	</script>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>复选框全选/全不选/反选</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				font: 20px/1.2em tahoma;
+			}
+			dl{
+				width: 200px;
+				margin: 20px auto;
+				border:1px solid #000;
+				background: #fafafa;
+				border-radius: 5px;
+				padding: 0 0 10px 0;
+			}
+			label,input,a{
+				vertical-align: middle;
+			}
+			input{
+				width: 20px;
+				height: 20px;
+			}
+			label{
+				padding: 0 5px;
+			}
+			a{
+				color: deepskyblue;
+				text-decoration: none;
+			}
+			a:hover{
+				color: red;
+			}
+			dt,dd{
+				padding: 10px;
+			}
+			dt{
+				border-bottom: 1px solid #666;
+			}
+			p{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<dl><!--定义列表，一系列项目和注释的组合-->
+			<dt>
+				<input type="checkbox" id="checkAll">
+				<label>全选</label>
+				<a href="javascript:;">反选</a>
+			</dt>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (一)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (二)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (三)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (四)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (五)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (六)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (七)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (八)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (九)</label>
+			</dd>
+			<dd>
+				<input type="checkbox">
+				<label>选项 (十)</label>
+			</dd>
+		</dl>
+		<p>1、切换全选/全不选文字；2、根据选中个数更新全选框状态；</p>
+	</body>
+	<script type="text/javascript">
+		var checkAll=document.getElementsByTagName("INPUT")[0];
+		var oCheckbox=document.getElementsByTagName("INPUT");
+		var oLabel=document.getElementsByTagName("LABEL")[0];
+		var oA=document.getElementsByTagName("A")[0];
+		//检测所有的按钮来更新全选按钮的状态
+		var isCheckAll=function(){
+			for(var i=1,n=0;i<oCheckbox.length;i++){
+				oCheckbox[i].checked && n++;
+				//相当于if(oCheckbox[i].checked) n++;
+			}
+			checkAll.checked= n==oCheckbox.length-1;
+			oLabel.innerHTML= checkAll.checked?"全不选":"全选";
+		};
+		//全选操作
+		checkAll.onclick=function(){
+			for(var i=1;i<oCheckbox.length;i++){
+				oCheckbox[i].checked=this.checked;
+			}
+			isCheckAll();
+		};
+		//反选操作
+		oA.onclick=function(){
+			for(var i=1;i<oCheckbox.length;i++){
+				oCheckbox[i].checked=!oCheckbox[i].checked;
+			}
+			isCheckAll();
+		}
+		//根据每个按钮是否按下来更新全选按钮
+		for(var i=1;i<oCheckbox.length;i++){
+			oCheckbox[i].onclick=function(){
+				isCheckAll();
+			};
+		}
+		
+	</script>
+</html>

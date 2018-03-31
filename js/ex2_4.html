@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>弹出层效果</title>
+		<style type="text/css">
+			html,body{
+				height:100%;
+				/*继承自window浏览器的高度吧，因为不指定的话overlay层则会height继承不到body
+				高度，故高度为0，不会显示遮罩层*/
+			}
+			body,div,h2{
+				margin: 0;
+				padding: 0;
+			}
+			p{
+				text-align:center;
+			}
+			#overlay{
+				width: 100%;/*继承body宽度*/
+				height: 100%;/*因为未定义body的高度，所以是0*/
+				top:0;
+				left 0;				
+				background:#000;/*黑色遮罩层*/
+				opacity:0.5; 
+				display:none;
+			}
+			#jump{
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width:400px;
+				height:200px;
+				background:#fff;
+				border: 4px solid #f90;
+				margin: -102px 0 0 -202px;
+				display:none;
+			}
+			h2{
+				font-size: 12px;
+				text-align:right;
+				background:#FC0;
+				border-bottom: 3px solid #f90;
+				padding:5px;
+			}
+			h2 span{
+				background-color: #fff;
+				color: #f90;
+				cursor: pointer;
+				border:1px solid #f90;
+				padding:0 3px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div id="overlay"></div><!--弹出层后的背景遮罩层-->
+		<div id="jump">
+			<h2><span id="close">x</span></h2>
+		</div>
+		<p><button>弹出层</button></p>
+	</body>
+	<script type="text/javascript">
+		var overlay=document.getElementById("overlay");
+		var close=document.getElementById("close");
+		var jump=document.getElementById("jump");
+		var btn=document.getElementsByTagName("BUTTON")[0];
+		btn.onclick=function(){
+			jump.style.display=jump.style.display=="block"?"none":"block";
+			overlay.style.display=overlay.style.display=="block"?"none":"block";
+		}
+		close.onclick=function(){
+			jump.style.display="none";
+			overlay.style.display="none";
+		}
+	</script>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>否定伪类选择器和filter</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			ul{
+				list-style-type: none outside none;
+				width:660px;
+				margin:20px auto;
+			}
+			li{
+				display:inline-block;
+				margin:5px;
+			}
+			img{
+				width:114px;
+				height:114px;
+			}
+			.gallery li:nth-child(2){
+				-webkit-filter:grayscale(1);
+			}
+			.gallery li:nth-child(3){
+				-webkit-filter:sepia(1);
+			}
+			.gallery li:nth-child(4){
+				-webkit-filter:saturate(0.5);
+			}
+			.gallery li:nth-child(5){
+				-webkit-filter:hue-rotate(90deg);
+			}
+			.gallery li:nth-child(6){
+				-webkit-filter:invert(1);
+			}
+			.gallery li:nth-child(7){
+				-webkit-filter:opacity(0.2);
+			}
+			.gallery li:nth-child(8){
+				-webkit-filter: blur(3px);
+			}
+			.gallery li:nth-child(9){
+				-webkit-filter: drop-shadow(5px 5px 5px #fc0);
+			}
+			.gallery li:nth-child(10){
+				-webkit-filter: brightness(.5);
+			}
+			.gallery:hover li:not(:hover){
+				-webkit-filter: blur(2px) grayscale(0.8);
+				opacity: 0.7;
+			}
+		</style>
+	</head>
+	<body>
+		<ul class="gallery">
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+			<li><img alt="" src="img/img1.jpg"></li>
+		</ul>
+	</body>
+</html>

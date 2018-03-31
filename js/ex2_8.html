@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>简易JS年历</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;			
+			}
+			#outer{
+				width:448px;
+				height:448px;
+				margin:10px auto;
+				background: #eaeaea;
+				
+			}
+			ul{
+				list-style-type: none;
+				overflow: hidden;
+			}
+			li{
+				width: 80px;
+				height: 80px;
+				float: left;
+				background: #424242;
+				font-size:30px;
+				line-height: 1.2em;
+				text-align: center;
+				letter-spacing: 2px;
+				cursor: pointer;
+				color: #fff;
+				padding: 5px;
+				margin:10px;
+				border:1px solid #000;
+			}
+			#detail{
+				margin: 10px;
+				padding:5px;
+				border: 1px solid #fff;				
+				background-color: #f1f1f1;
+				font: 16px/1.5em arial;
+			}
+			.current{
+				background-color: #fff;
+				color: hotpink;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<ul>
+				<li>
+					<strong>1</strong>
+					JAN
+				</li>
+				<li>
+					<strong>2</strong>
+					FEB
+				</li>
+				<li class="current">
+					<strong>3</strong>
+					MAR
+				</li>
+				<li>
+					<strong>4</strong>
+					APR
+				</li>
+				<li>
+					<strong>5</strong>
+					MAY
+				</li>
+				<li>
+					<strong>6</strong>
+					JUN
+				</li>
+				<li>
+					<strong>7</strong>
+					JUL
+				</li>
+				<li>
+					<strong>8</strong>
+					AUG
+				</li>
+				<li>
+					<strong>9</strong>
+					SEP
+				</li>
+				<li>
+					<strong>10</strong>
+					OCT
+				</li>
+				<li>
+					<strong>11</strong>
+					NOV
+				</li>
+				<li>
+					<strong>12</strong>
+					DEC
+				</li>
+			</ul>
+			<div id="detail">
+				<h2><strong>3</strong>月节日</h2>
+				<p>妇女节：3月8日妇女节，不放假555。</p>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var calender=document.getElementsByTagName("LI");
+		var month=document.getElementById("detail").getElementsByTagName("STRONG")[0];
+		var content=document.getElementById("detail").getElementsByTagName("P")[0];
+		var arr=["元旦：1月1日至3日放假三天。","春节：2月2日至8日放假7天。","妇女节：3月8日妇女节，不放假555。",
+		"清明节：4月3日至5日放假3天","劳动节：4月30日至5月2日放假3天。","端午节：6月4日至6日放假3天。",
+		"小暑：7月7日小暑。不放假。","七夕节：8月6日七夕节。不放假。","中秋节：9月10日至12日放假3天。",
+		"国庆节：10月1日至7日放假7天。","立冬：11月8日立冬。不放假。","艾滋病日:12月1日。<br>废除奴隶制国际日:12月2日。"];
+		for(var i=0;i<calender.length;i++){
+			calender[i].index=i;
+			calender[i].onmouseover=function(){
+				for(var j=0;j<calender.length;j++){
+					calender[j].className="";
+				}
+				this.className="current";
+				month.innerText=this.index+1;
+				content.innerHTML=arr[this.index];
+			}
+		}
+	</script>
+</html>
