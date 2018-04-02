@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>用typeof查看数据类型</title>
+		<style type="text/css">
+			pre{
+				color: green;
+				padding: 10px 15px;
+				background: #f0f0f0;
+				border: 1px dotted #333;
+				font: 16px/1.2em "courier new";
+				
+			}
+			span{
+				color: #999;
+			}
+		</style>
+	</head>
+	<body>
+		<pre>
+			&lt;script type="text/javascript"&gt;
+				alert(typeof 12345);
+				<span>//输出number</span>
+				alert(typeof "abc");
+				<span>//输出string</span>
+				alert(typeof document);
+				<span>//输出object</span>
+			&lt;/script>&gt;
+		</pre>
+	</body>
+	<script type="text/javascript">
+		alert("typeof 12345 → " + typeof 12345 + "\ntypeof \"abc\" → " 
+		+ typeof "abc" + "\ntypeof document → " + typeof document);
+	</script>
+</html>

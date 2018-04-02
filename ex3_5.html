@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>页面加载后累加，自加1</title>
+		<style type="text/css">
+			#outer{
+				text-align:center;
+				font: 50px/1.2em "courier new";
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<span>0</span>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var num=document.getElementsByTagName("SPAN")[0];
+		var i=0;
+		setInterval(function(){
+			num.innerHTML=++i;
+		},1000);
+		
+		
+	</script>
+</html>

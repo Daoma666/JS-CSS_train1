@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>输入两个数字，比较大小</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#outer{
+				width:400px;
+				margin: 20px auto;
+			}
+			input{
+				width:60px;
+				height:30px;
+				margin: 10px;	
+			}
+			input[type="text"]{
+				background: #eee;
+				border: 1px solid #A9A9A9;
+			}
+			input[type="button"]{
+				width: 90px;
+			}
+			span{
+				margin:10px;
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<input type="text">VS<input type="text"><input type="button" id="btn" value="最大的数是>>"><span>?</span>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var result=document.getElementsByTagName("SPAN")[0];
+		var oInput=document.getElementsByTagName("INPUT");
+		var btn=document.getElementById("btn");
+		for(var i=0;i<oInput.length-1;i++){
+			oInput[i].onkeyup=function(){
+				for(var j=0;j<this.value.length;j++){
+					this.value=this.value.replace(/[^(\d)|-]/,"");//把输入不是数字和负号的字符全替换为空字符串
+				}
+			}
+		}
+		function compare(elem,value1,value2){
+			if(value1.value=="" || value2.value==""){
+				alert("请输入数字");
+			}else{
+				elem.innerHTML=Math.max(parseInt(value1.value),parseInt(value2.value));
+			}
+		}
+		btn.onclick=function(){
+			compare(result,oInput[0],oInput[1]);
+		}
+	</script>
+</html>

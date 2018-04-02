@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>网页计算器(还是没搞懂。。。)</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				font: bold 20px/1.5em Arial;
+			}
+			/*记住width和height指定的都是内容区*/
+			#outer{
+				width: 306px;
+				margin:20px auto;
+				border: 1px solid #000;
+				overflow: hidden;
+				background: #000;
+				position:relative;
+			}
+			#outer p{
+				font-size: 14px;
+				text-align: right;
+				color: #fff;
+			}
+			#outer input{
+				border: 0; /*input默认有border*/
+				width: 306px;
+				text-align: right;
+			}
+			#outer input#formula{
+				position: absolute;
+				top: 30px;
+				background: none;
+				font: 600 16px/1.5em Arial;
+				text-align: right;
+			}
+			#outer input#show{
+				/*padding-right: 10px;不知道为什么在这里padding没有作用*/
+				height: 90px;
+				font-size: 60px;
+				font-weight: 600;
+				background: -webkit-linear-gradient(top,#66ff33,#669933);
+			}
+			/*ul设置左右padding*/
+			#outer ul{
+				list-style-type: none;
+				overflow: hidden;
+				position:relative;
+				padding: 0 0 20px 10px;
+			}
+			/*每个li设置上右margin即可实现一个均匀的布局*/
+			#outer ul li{
+				width: 60px;
+				height: 36px;
+				float: left;
+				border: 2px solid #333;
+				border-radius: 6px;
+				margin: 17px 10px 0 0;
+				background: -webkit-linear-gradient(top,#00CED1,#483D8B);
+				box-shadow: 0 1px 3px #eee inset,0 1px 1px #ccc,0 1px 2px #aaa,0 1px 4px #999;
+			}
+			#outer ul li a{
+				display: block;
+				width: 60px;
+				height: 36px;
+				text-align: center;
+				text-decoration: none;
+				line-height: 36px;/*设置为父容器的高度，这样可以让文字垂直居中*/
+				color: #fff;
+			}
+			#outer ul li:hover{
+				border: 2px solid #666;
+			}
+			#outer ul li:active{
+				background: -webkit-linear-gradient(top,#483D8B,#00CED1);
+			}
+			#outer ul li.btn-1{	
+				background: -webkit-linear-gradient(top,#fbc58c,#d47109);
+			}
+			#outer ul li.btn-1:active{
+				background: -webkit-linear-gradient(top,#d47109,#fbc58c);
+			}
+			#outer ul li.btn-2{	
+				float: right;
+				height: 91.86px;
+				background: -webkit-linear-gradient(top,#FF99CC,#990066);
+			}
+			#outer ul li.btn-2:active{
+				background: -webkit-linear-gradient(top,#990066,#FF99CC);
+			}
+			#outer ul li.btn-2 a{
+				height: 91.86px;
+				line-height: 91.86px;
+			}
+			#outer ul li.btn-3,#outer ul li.btn-3 a{
+				width: 132.86px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<p>Made by Daoma</p>
+			<input id="formula" type="text" readonly="readonly">
+			<input id="show" type="text" readonly="readonly" maxlength="9" value="0">
+			<ul>
+				<li class="btn-1"><a href="javascript:void(0)">c</a></li>
+				<li class="btn-1"><a href="javascript:void(0)">%</a></li>
+				<li class="btn-1"><a href="javascript:void(0)">÷</a></li>
+				<li class="btn-1"><a href="javascript:void(0)">×</a></li>
+				<li><a href="javascript:void(0)">7</a></li>
+				<li><a href="javascript:void(0)">8</a></li>
+				<li><a href="javascript:void(0)">9</a></li>
+				<li class="btn-1"><a href="javascript:void(0)">-</a></li>
+				<li><a href="javascript:void(0)">4</a></li>
+				<li><a href="javascript:void(0)">5</a></li>
+				<li><a href="javascript:void(0)">6</a></li>
+				<li class="btn-1"><a href="javascript:void(0)">+</a></li>
+				<li><a href="javascript:void(0)">1</a></li>
+				<li><a href="javascript:void(0)">2</a></li>
+				<li><a href="javascript:void(0)">3</a></li>
+				<li class="btn-2"><a href="javascript:void(0)">=</a></li>
+				<li class="btn-3"><a href="javascript:void(0)">0</a></li>
+				<li><a href="javascript:void(0)">.</a></li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var show=document.getElementById("show");
+		var formula=document.getElementById("formula");
+		var oA=document.getElementsByTagName("A");
+		var s=false;//s代表用户是否按下了“=键”
+		
+		function count(ch){
+			if(s){
+				//如果之前按下“=键”执行完一次运算的话，又按下了运算符键，则把结果继续用来运算
+				formula.value=show.value+ch;
+				show.value=ch;
+				s=false;				
+			}else{
+				//a||b a是true,则不执行b；a是false，执行b
+				//如果展示框不以+-*/%为结尾的话，则把展示框的内容添加到公式框中(把要运算的数字先放到公式框里)
+				/[\%\/\*\-\+]$/.test(show.value) || (formula.value+=show.value); //因为||优先级高于+=所以要加括号
+				show.value=ch;//展示框显示当前选中的运算符
+				//如果公式框不以+-*/%为结尾的话，则把展示框当前的运算符添加到公式框中(再把运算符放进去，同时保证公式框的结尾只有一个运算符，避免你狂点运算符导致公式框结尾出现一堆运算符)
+				/[\%\/\*\-\+]$/.test(formula.value) || (formula.value+=show.value);
+				//slice(-1)返回从当前数组length-1项到数组末尾的所有项===返回一个数组只包含该数组最后一项
+				//如果该数组最后一项(最后一个字符)不是当前运算符，则把formula.value的最后一个字符替换为ch，否则就保持原样。(.匹配除换行符 \n 之外的任何单字符)
+				//这句话的作用为当你点击了一个运算符以后，又切换了另外的运算符，要保证formula的最后要更新为这个新的运算符(如果不加这句那么上一句就会拒绝任何新的运算符)
+				formula.value=formula.value.slice(-1)[0]!=ch ? formula.value.replace(/.$/,ch) : formula.value;
+			}		
+		}
+		
+		for(var i=0;i<oA.length;i++){
+			oA[i].onclick=function(){
+				switch(this.innerHTML){
+					case "c":
+						show.value=0;
+						formula.value="";
+						break;
+					case "%":
+						count("%");
+						break;
+					case "÷":
+						count("/");
+						break;
+					case "×":
+						count("*");
+						break;
+					case "-":
+						count("-");
+						break;
+					case "+":
+						count("+");
+						break;
+					case "=":
+						s || (formula.value+=show.value);
+						//eval()接受字符串动态执行JS代码，但不知道把这些运算符都替换掉以后怎么执行的？？？
+						show.value=eval(formula.value.replace(/\%\/\*\-\+/,""));
+						show.value=show.value.substr(0,9).replace("NaN",0);
+						s=true;
+						break;
+					case ".":
+						//如果能找到下述字符，则直接break，不往展示框里加入.字符，如果没找到则可以让.字符加入下面的default运算
+						if(show.value.search(/[\.\%\/\*\-\+]/) != -1){
+							break;
+						}
+					//数字0~9
+					default:
+						//a && b 如果a是true，执行b；如果a是false，只执行a
+						//如果用户按下了等号键，又没有按任何运算符键，则按数字键时会重置展示框和公式框(因为如果按下了运算符键，会在count()函数里把s=false;就不会执行后面这句)
+						s && (show.value=0,formula.value="",s=false);
+						//该例展示框能显示的最适字符长度是9个，后面的语句适合在一直输入数字的情况下，如果字符数小于9个，就往展示框加入按下的数字(或.)，如果新字符串开头是0+-*/%的话，替换为第二个是数字的字符
+						//$1代表正则表达式里第1个括号里匹配到的字符，但显然这个正则表达式只在添加第一个数字时有用，再往后添加数字时都不会触发这个正则表达式了
+						show.value.length<9 && (show.value=(show.value+this.innerHTML).replace(/^[0\%\/\*\+\-](\d)/,"$1"));
+						break;
+				}
+			}
+		}
+	</script>
+</html>

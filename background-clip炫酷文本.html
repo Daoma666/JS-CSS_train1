@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>webkit内核使用background-clip:text制作背景图片填充文本</title>
+		<style type="text/css">
+			div{
+				width: 420px;
+				margin: 30px auto;
+				padding: 20px;
+				border: 20px dashed rgba(0,0,0,0.3);
+				background: orange url(img/big_3.jpg);
+				/*background-origin: padding-box;
+				background-clip: border-box;*/
+				font-size: 60px;
+				font-weight: bold;
+				color: #fff;
+				text-align: center;
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			文字的背景是Linzhiling哦，你们看出来了吗？
+		</div>
+	</body>
+</html>

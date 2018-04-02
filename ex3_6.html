@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>判断数字是否为两位数</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#outer{
+				margin:20px;
+				text-align: center;
+			}
+			input{
+				width:60px;
+				height:30px;
+				margin: 10px;	
+			}
+			input[type="text"]{
+				background: #eee;
+				border: 1px solid #A9A9A9;
+			}
+			input[type="button"]{
+				width: 90px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<input type="text"><input type="button" value="是否为两位数">
+		</div>
+	</body>
+	<script type="text/javascript">
+		var oInput=document.getElementsByTagName("INPUT");
+		/* 像我这种弱鸡的一般写法......
+		oInput[0].onkeyup=function(){
+			for(var j=0;j<this.value.length;j++){
+				this.value=this.value.replace(/[^\d|-]/,"");//把输入不是数字和负号的字符全替换为空字符串
+			}
+		}
+		oInput[1].onclick=function(){
+		
+			if(oInput[0].value.length==0){
+				alert("请输入数字");
+				return;
+			}
+			var num=0;
+			for(var i=0;i<oInput[0].value.length;i++){
+				if(oInput[0].value[i]!="-"){
+					num++;
+				}
+			}
+			num==2 ? alert("√ 是两位数") : alert("这是"+num+"位数");
+		}
+		*/
+			oInput[0].onkeyup=function(){
+				this.value=this.value.replace(/[^\d]/,"");//[]里的^表示非的意思，匹配任意的不是数字的字符，替换为空字符串
+			}
+			oInput[1].onclick=function(){
+				oInput[0].value=="" ? alert("请输入数字") :
+				alert(/^d{2}/.test(oInput[0].value) ? "√这是两位数" : "这是"+oInput[0].value.length+"位数");
+				//{n}匹配确定的n次，所以这是在检验该字符串是否以两个数字开头
+			}
+	</script>
+</html>
