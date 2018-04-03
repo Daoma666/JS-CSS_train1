@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>倒计时时钟</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				font: 400 20px/1.5em arial;
+			}
+			#outer{
+				width: 300px;
+				margin: 20px auto;
+				background: #000;
+				color: white;
+				text-align: center;
+				padding: 10px 0;
+			}
+			
+			#outer span{
+				width: 80px;
+				height: 40px;
+				line-height: 40px;
+				background: #fff;
+				border: 2px solid #999;
+				color: #000;
+				margin: 0 10px;
+				padding: 2px 10px;
+			}
+			#outer button{
+				width:260px;
+				height: 45px;
+				line-height: 45px;
+				margin: 10px;
+				border: 2px solid #333;
+				border-radius: 8px;
+				cursor: pointer;
+				background: -webkit-linear-gradient(top,#ADFF2F,#8E8E38);
+				box-shadow: 0 1px 1px #eee inset,0 1px 0px #eee,0 1px 3px #999;
+				font-size: 20px;
+				font-weight: 600;
+				letter-spacing: 5px;
+				color: #fff;
+			}
+			#outer button.btn{
+				background: -webkit-linear-gradient(top,#FFA07A,#EE2C2C);
+				
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<span>01</span>分钟
+			<span>01</span>秒
+			<button class>启动</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var btn=document.getElementsByTagName("BUTTON")[0];
+		var oSpan=document.getElementsByTagName("SPAN");
+		var timer=null;//用它来暂存setInterval()，要不然无法用clearInterval取消
+		//我这菜鸡的写法
+//		function timeOut(){
+//			var minute=parseInt(oSpan[0].innerHTML);
+//			var second=parseInt(oSpan[1].innerHTML);
+//			if(second>0){
+//				second--;
+//				oSpan[1].innerHTML=second.toString().replace(/^(\d)$/,"0$1");
+//			}else{
+//				if(minute>0){
+//					minute--;
+//					oSpan[0].innerHTML=minute.toString().replace(/^(\d)$/,"0$1");
+//					second=59;
+//					oSpan[1].innerHTML=second;
+//				}else{
+//					clearInterval(timer);
+//					return;
+//				}
+//			}
+//		}
+		//大佬的写法
+		function timeOut(){
+			var totalSeconds=parseInt(oSpan[0].innerHTML.replace(/^0/,""))*60+
+							parseInt(oSpan[1].innerHTML.replace(/^0/,""));
+			if(totalSeconds<=0){
+				clearInterval(timer);
+				return;
+			}
+			totalSeconds--;
+			//除法得到分钟
+			oSpan[0].innerHTML=parseInt(totalSeconds/60).toString().replace(/^(\d)$/,"0$1");
+			//求余得到秒0~59秒
+			oSpan[1].innerHTML=(totalSeconds%60).toString().replace(/^(\d)$/,"0$1");
+		}
+		btn.onclick=function(){
+			this.className = this.className==""?"btn":"";
+			//利用类名来判断计时器状态
+			this.className=="btn" ? (this.innerHTML="取消",timer=setInterval(timeOut,1000)) :
+									(this.innerHTML="启动",clearInterval(timer));
+		}
+	</script>
+</html>

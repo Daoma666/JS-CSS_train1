@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>简易网页时钟</title>
+		<style type="text/css">
+			body{
+				font: 400 20px/1.5em arial;
+			}
+			#outer{
+				width: 300px;
+				height: 60px;
+				margin: 20px auto;
+				background: #000;
+				color: white;
+				text-align: center;
+				line-height: 60px;
+			}
+			
+			#outer span{
+				width: 80px;
+				height: 40px;
+				background: #fff;
+				border: 2px solid #999;
+				color: #000;
+				margin: 5px;
+				padding: 2px 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<span>awd</span>点<span></span>分<span></span>秒
+		</div>
+	</body>
+	<script type="text/javascript">
+		var oSpan=document.getElementsByTagName("SPAN");
+		function getTimes(){
+			var oDate=new Date();
+			var time=[oDate.getHours(),oDate.getMinutes(),oDate.getSeconds()];
+			for(var i=0;i<oSpan.length;i++){
+				//^(\d)$匹配字符串开始到结尾只有一个数字，用括号的原因是为了使后面的$1得到括号里的内容，给小于10的小时前面加上0
+				oSpan[i].innerHTML=time[i].toString().replace(/^(\d)$/,"0$1");
+				//replace是String对象的方法，所以要先toString()
+			}
+		}
+		getTimes();/*先让span里有值*/
+		setInterval(getTimes,1000);
+	</script>
+</html>

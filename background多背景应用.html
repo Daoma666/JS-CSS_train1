@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>多背景制作花边框</title>
+		<style type="text/css">
+			.demo{
+				width: 240px;
+				border: 20px solid rgba(104,104,142,0.5);
+				border-radius: 10px;
+				margin: 20px auto;
+				padding: 80px 60px;
+				text-align: center;
+				color: #f36;
+				font-size: 25px;
+				line-height: 1.5em;
+			}
+			.multipleBg{
+				background: url("img/bg-tl.png") no-repeat left top,
+							url("img/bg-tr.png") no-repeat top right,
+							url("img/bg-bl.png") no-repeat left bottom,
+							url("img/bg-br.png") no-repeat bottom right,
+							url("img/bg-repeat.png") repeat left top;
+				/*默认的background-origin是padding-box*/
+				background-origin: border-box,border-box,border-box,border-box,
+									padding-box;
+				background-clip: border-box;/*默认的background-clip*/
+			}
+		</style>		
+	</head>
+	<body>
+		<div class="demo multipleBg">我使用了五张背景图片，制作这样的效果</div>
+	</body>
+</html>
