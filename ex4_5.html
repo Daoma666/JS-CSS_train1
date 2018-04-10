@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>css函数一设置/读取对象的属性</title>
+		<style type="text/css">
+			#box{
+				width: 500px;
+				height: 250px;
+				margin: 20px auto;
+				border: 1px solid red;
+				background-color: rgb(254,244,235);
+			}
+			input{
+				background: #f60;
+				font: bold 16px/1.5em arial;
+				color: #fff;
+				margin: 10px 0 0 10px;
+				padding: 2px 4px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<input type="button" value="Get Style">
+			<input type="button" value="Set Style">
+			<input type="button" value="Default Style">
+		</div>
+	</body>
+	<script type="text/javascript">
+		function css(obj,attr,value){
+			switch(arguments.length){
+				case 2:
+					if(typeof arguments[1] == "object"){
+						//两个参数，attr参数是对象的话，批量设置属性
+						for(var i in attr){
+							obj.style[i]=attr[i];
+						}
+					}else{
+						//两个参数，attr参数是字符串，读取属性值
+						return obj.currentStyle ? obj.currentStyle[attr] :
+								getComputedStyle(obj,null)[attr];
+					}
+					break;
+				case 3:
+					//三个参数，单一设置属性
+					obj.style[attr]=value;
+					break;
+				default:
+					alert("参数错误！");
+			}
+		}
+		var box=document.getElementById("box");
+		var btn=document.getElementsByTagName("INPUT");
+		btn[0].onclick=function(){
+			alert("width:"+css(box,"width")+"\nheight:"
+				+css(box,"height")+"\nbackground-color:"
+				+css(box,"backgroundColor"));
+		};
+		btn[1].onclick=function(){
+			//用大括号定义了一个对象
+			css(box,{width: "330px",height: "100px",borderColor: "blue",backgroundColor: "#eff8ff"});
+			for(var i=0;i<btn.length;i++){
+				css(btn[i],"backgroundColor","#0084ff");
+			}
+		};
+		btn[2].onclick=function(){
+			css(box,{width: "500px",height: "250px",borderColor: "#f60",backgroundColor: "rgb(254,244,235)"});
+			for(var i=0;i<btn.length;i++){
+				css(btn[i],"backgroundColor","#f60");
+			}
+		};
+	</script>
+</html>

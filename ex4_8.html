@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>事件练习：封装兼容性添加、删除事件的函数</title>
+		<style type="text/css">
+			body{
+				font: 300 16px/1.5em "new york";
+				color: #008000;
+				text-align: center;
+			}
+			pre{
+				border: 1px solid #ccc;				
+				background: #eee;
+				text-align: left;
+				padding: 10px;
+			}
+			
+		</style>
+		<script type="text/javascript">
+			var EventUtil={
+				addHandler: function(element,type,handler){
+					element.addEventListener ? element.addEventListener(type,handler,false)
+							: element.attachEvent("on"+type,handler);			
+				},
+				removeHandler: function(element,type,handler){
+					element.removeEventListener ? element.removeEventListener(type,handler,false)
+							: element.detachEvent("on"+type,handler);
+				},
+				addLoadHandler: function(handler){
+					this.addHandler(window,"load",handler);
+				}
+			}
+			
+			EventUtil.addLoadHandler(function(){
+				var btn=document.getElementsByTagName("INPUT");
+				btn[1].onclick=function(){	
+					EventUtil.addHandler(btn[0],"click",handler1);
+					btn[0].value="我可以点击了！";
+				};
+				btn[2].onclick=function(){
+					EventUtil.removeHandler(btn[0],"click",handler1);
+					btn[0].value="毫无用处的按钮";
+				};
+			});
+			
+			function handler1(){
+				alert("事件绑定成功！");
+			}
+		</script>
+	</head>
+	<body>
+		<pre>&lt;script type="text/javascript"&gt;
+var EventUtil = {
+	addHandler: function (oElement, sEvent, fnHandler) {
+		oElement.addEventListener ? oElement.addEventListener(sEvent, fnHandler, false) : oElement.attachEvent("on" + sEvent, fnHandler)	
+	},
+	removeHandler: function (oElement, sEvent, fnHandler) {
+		oElement.removeEventListener ? oElement.removeEventListener(sEvent, fnHandler, false) : oElement.detachEvent("on" + sEvent, fnHandler)
+	},
+	addLoadHandler: function (fnHandler) {
+		this.addHandler(window, "load", fnHandler)
+	}
+}
+&lt;/script&gt;</pre>
+		<input type="button" value="毫无用处的按钮">
+		<input type="button" value="绑定click">
+		<input type="button" value="解除绑定">
+	</body>
+</html>

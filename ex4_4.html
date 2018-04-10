@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>agruments应用一求出函数参数的总合</title>
+		<style type="text/css">
+			#outer{
+				width: 600px;
+				border: 1px solid #999;
+				background: #eee;
+				color: #008000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<pre>
+&lt;script type="text/javascript"&gt;
+	var i = iResult = 0;
+	function sum()
+	{
+		for (var i = 0; i < arguments.length; i++)
+		{
+			iResult += arguments[i];
+		}
+		return iResult;
+	}
+	//应用
+	alert(sum(1,2,3,4,5,6,7,8,9,10)); //输出55
+&lt;/script&gt;
+			</pre>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var i=iResult=0;
+		function sum(){
+			for(var i=0;i<arguments.length;i++){
+				iResult += arguments[i];
+			}
+			return iResult;
+		}
+		alert(sum(1,2,3,4,5,6,7,8,9,10));
+	</script>
+</html>

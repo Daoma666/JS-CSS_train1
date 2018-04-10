@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>setTimeout应用</title>
+		<style type="text/css">
+			*{
+				margin:0;padding:0;
+			}
+			body{
+				font:12px/1.5 Arial;
+			}
+			ul{
+				list-style-type:none;
+			}
+			/*所有的背景都是从图片里切出来的(包括小三角)......*/
+			#nav,#nav ul,#nav ul li,#nav ul li a:hover,
+			#nav .subnav,#nav .subnav p,#nav .subnav p span,
+			#nav .subnav .arrow
+			{
+				background:url(img/nav_bg.png) no-repeat;
+			}
+			#nav{
+				position:relative;
+				width:910px;
+				background-position:0 -36px;
+				margin:20px auto;
+			}
+			#nav ul{
+				height:36px;
+				line-height:36px;
+				margin-left:10px;
+				padding-right:10px;
+				overflow:hidden;
+				background-position:right -72px;
+			}
+			#nav ul li{
+				float:left;
+				width:110px;
+				margin-left:-2px;
+				background-position:0 -108px;
+			}
+			#nav ul li a{
+				font-size:14px;
+				color:#fff;
+				width:102px;
+				display:block;
+				text-align:center;
+				text-decoration:none;
+				margin:0 2px 0 4px;
+			}
+			#nav ul li a:hover{
+				font-weight:700;
+				background-position:-3px -144px;
+			}
+			#nav .subnav{
+				display:none;
+				position:absolute;
+				top:41px;
+				width:auto!important;
+				min-width:110px;
+				height:27px;
+				line-height:27px;
+				white-space:nowrap;
+				background-position:0 -180px;
+			}
+			#nav .subnav p{
+				margin-left:10px;
+				padding-right:10px;
+				background-position:right -234px;
+			}
+			#nav .subnav p span{
+				display:block;
+				color:#235e99;
+				background-repeat:repeat-x;
+				background-position:0 -207px;
+			}
+			#nav .subnav p a{
+				font-size:12px;
+				display:inline;
+				color:#235e99;
+				text-decoration:none;
+				margin:0 5px;padding:0 2px;
+			}
+			#nav .subnav p a:hover{
+				font-weight:400;
+				background-image:none;
+				border-bottom:2px solid;
+			}
+			#nav .subnav .arrow{
+				position:absolute;
+				top:-4px;
+				display:block;
+				width:11px;
+				height:5px;
+				background-position:0 -261px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="nav">
+		    <ul>
+		        <li><a href="javascript:;">站长之家</a></li>
+		        <li>
+		            <a href="javascript:;">行业资讯</a>
+		            <div class="subnav" style="display: none;">
+		                <em class="arrow"></em>
+		                <p>        	
+		                    <span>
+		                        <a href="javascript:;">业界动态</a>|
+		                        <a href="javascript:;">收购融资</a>|
+		                        <a href="javascript:;">门户动态</a>|
+		                        <a href="javascript:;">搜索引擎</a>|
+		                        <a href="javascript:;">网络游戏</a>|
+		                        <a href="javascript:;">电子商务</a>|
+		                        <a href="javascript:;">广告传媒</a>|
+		                        <a href="javascript:;">厂商开发</a>
+		                    </span>
+		                </p>
+		            </div>
+		        </li>
+		        <li>
+		            <a href="javascript:;">站长在线</a>
+		            <div class="subnav" style="display: none;">
+		                <em class="arrow"></em>
+		                <p>        	
+		                    <span>
+		                        <a href="javascript:;">站长报道</a>|
+		                        <a href="javascript:;">好站推荐</a>|
+		                        <a href="javascript:;">站长聚会</a>|
+		                        <a href="javascript:;">站长访谈</a>|
+		                        <a href="javascript:;">站长茶馆</a>|
+		                        <a href="javascript:;">网站排行</a>
+		                    </span>
+		                </p>
+		            </div>
+		        </li>
+		        <li>
+		            <a href="javascript:;">网站运营</a>
+		            <div class="subnav" style="display: none; left: 332px;">
+		                <em class="arrow" style="left: 50px;"></em>
+		                <p>        	
+		                    <span>
+		                        <a href="javascript:;">建站经验</a>|
+		                        <a href="javascript:;">策划盈利</a>|
+		                        <a href="javascript:;">搜索优化</a>|
+		                        <a href="javascript:;">网站推广</a>|
+		                        <a href="javascript:;">免费资源</a>
+		                    </span>
+		                </p>
+		            </div>
+		        </li>
+		        <li>
+		            <a href="javascript:;">设计在线</a>
+		            <div class="subnav" style="display: none;">
+		                <em class="arrow"></em>
+		                <p>        	
+		                    <span>
+		                        <a href="javascript:;">酷站推荐</a>|
+		                        <a href="javascript:;">网页设计</a>|
+		                        <a href="javascript:;">WEB标准</a>|
+		                        <a href="javascript:;">视频处理</a>|
+		                        <a href="javascript:;">设计活动</a>
+		                    </span>
+		                </p>
+		            </div>
+		        </li>
+		        <li>
+		            <a href="javascript:;">网络编程</a>
+		            <div class="subnav" style="display: none;">
+		                <em class="arrow"></em>
+		                <p>        	
+		                    <span>
+		                        <a href="javascript:;">Asp编程</a>|
+		                        <a href="javascript:;">Php编程</a>|
+		                        <a href="javascript:;">.Net编程</a>|
+		                        <a href="javascript:;">Xml编程</a>|
+		                        <a href="javascript:;">Access</a>|
+		                        <a href="javascript:;">Mssql</a>|
+		                        <a href="javascript:;">Mysql</a>
+		                    </span>
+		                </p>
+		            </div>
+		        </li>
+		        <li>
+		            <a href="javascript:;">联盟资讯</a>
+		            <div class="subnav" style="display: none;">
+		                <em class="arrow"></em>
+		                <p>        	
+		                    <span>
+		                        <a href="javascript:;">联盟动态</a>|
+		                        <a href="javascript:;">联盟介绍</a>|
+		                        <a href="javascript:;">联盟点评</a>|
+		                        <a href="javascript:;">网赚技巧</a>
+		                    </span>
+		                </p>
+		            </div>
+		        </li>
+		        <li>
+		            <a href="javascript:;">服务器</a>
+		            <div class="subnav" style="display: none;">
+		                <em class="arrow"></em>
+		                <p>        	
+		                    <span>
+		                        <a href="javascript:;">Web服务器</a>|
+		                        <a href="javascript:;">Ftp服务器</a>|
+		                        <a href="javascript:;">Mail服务器</a>|
+		                        <a href="javascript:;">Dns服务器</a>|
+		                        <a href="javascript:;">Win服务器</a>|
+		                        <a href="javascript:;">Linux服务器</a>|
+		                        <a href="javascript:;">安全防护</a>|
+		                        <a href="javascript:;">虚拟主机</a>
+		                    </span>
+		                </p>
+		            </div>
+		        </li>        
+		    </ul>    
+		</div>
+	</body>
+	<script type="text/javascript">
+		//原大佬就是任性，自己封装一下获取DOM的方法
+		var get={
+			byId: function(id){
+				return document.getElementById(id);
+			},
+			byClass: function(sClass,oParent){
+				var aClass=[];
+				var reClass=new RegExp("(^| )"+sClass+"( |$)");
+				var aElem=this.byTagName("*",oParent);//得到oParent下所有子标记的NodeList数组
+				for(var i=0;i<aElem.length;i++){
+					reClass.test(aElem[i].className) && aClass.push(aElem[i]);
+				}
+				return aClass;
+			},
+			byTagName: function(elem,obj){
+				return (obj || document).getElementsByTagName(elem);
+			}
+		};
+		var oNav=get.byId("nav");
+		var aLi=get.byTagName("li",oNav);
+		var aSubNav=get.byClass("subnav",oNav);
+		var oSubnav=oEm=timer=null;
+		var i=0;
+		
+		for(i=1;i<aLi.length;i++){
+			aLi[i].onmouseover=function(){
+				for(i=0;i<aSubNav.length;i++){
+					aSubNav[i].style.display="none";
+				}
+				//获取该项的subNav
+				oSubNav=get.byClass("subnav",this)[0];
+				oEm=get.byTagName("em",this)[0];
+				oSubNav.style.display="block";
+				/* 二级导航栏与一级导航栏对齐的精华
+				 * HTMLElement.offsetLeft 是一个只读属性，返回当前元素左上角相对于  HTMLElement.offsetParent 节点的左边界偏移的像素值。但当元素设置定位后，offsetLeft寻找相对元素的方法与定位元素的寻找相对元素相同。
+				 * left,right则跟position定位有关，设置了absolute的元素会完全脱离文档流，它并不是相对于浏览器进行定位，而是一层一层向上寻找父元素，直到寻找到第一个position不为static的祖先元素，它相对于这个祖先元素进行定位。
+				 * 所以当你的父元素position:relative时，该子元素才会相对于你的父元素进行定位。如果任何一个祖先元素都没有设置position:relative，寻找到最外层的顶级元素html后自然不会继续寻找，所以这时才是相对于浏览器进行定位。
+				*/
+				//如果subNav的宽度+它所在li.offsetLeft(相对于ul) > 外层oNav的宽度，那子菜单就会超出oNav
+				oNav.offsetWidth-this.offsetLeft < oSubNav.offsetWidth ?
+					//超出宽度时：因为oNav的position为relative,而SubNav为absolute，所以right,left相对oNav偏移
+					oSubNav.style.right=0 :
+					//未超出宽度时跟当前li的left对齐
+					oSubNav.style.left=this.offsetLeft+"px";
+				
+					/* oEm因为position:absolute，所以相对于它祖先position不是static的元素偏移，即oSubNav
+					 * 原以为oSubNav按照它的父节点Li偏移，但经过下面代码的测试
+					 * alert(this.offsetLeft+" "+oSubNav.offsetLeft);可以发现他俩都相对最外层oNav偏移，
+					 * 所以可证明offsetLeft寻找相对元素的方法与定位相同
+					*/
+					//this.offsetLeft-oSubNav.offsetLeft就得到了oEm相对于oSubNav左侧到包含它的li的距离，再+50即可定位到li的中间
+					oEm.style.left=this.offsetLeft-oSubNav.offsetLeft+50+"px";
+					clearTimeout(timer);
+					
+					//？？？现在才疏学浅，不知道这里阻止事件冒泡有什么用，我猜是避免资源浪费
+					oSubNav.onmouseover=function(event){
+						(event || window.event).cancelBubble=true;
+						clearTimeout(timer);
+					}	
+			};
+			aLi[i].onmouseout=function(){
+				timer=setTimeout(function(){
+					oSubNav.style.display="none";
+				},500);
+			};
+		}
+	</script>
+</html>

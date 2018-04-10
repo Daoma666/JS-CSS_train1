@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>数组练习：各种数组方法的使用</title>
+		<style type="text/css">
+			div{
+				border: 1px solid #ccc;
+				font-size: 14px;
+				color: #008000;
+				background: #eee;
+				margin: 10px 0;
+				padding: 10px;
+				word-wrap: break-word;/*允许长单词自动换行到下一行*/
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var oDiv=document.getElementsByTagName("DIV");
+				var btn=document.getElementsByTagName("INPUT");
+				var temp=[];
+				var i=0;
+				var b1=b2=true;
+				
+				function getArray(str){
+					temp.length=0;//这样即可清空数组，JS独有嘎嘎
+					temp=str.split(",");
+					return temp;
+				}
+				
+				btn[0].onclick=function(){
+					temp=getArray(oDiv[0].innerHTML);
+					//shift()移除队列头部，unshift()添加队列头部
+					b1  ? (temp.shift(), this.value=this.value.replace("删除","添加"), b1=false)
+						: (temp.unshift("January(1)"), this.value=this.value.replace("添加","删除"), b1=true);
+					oDiv[0].innerHTML=temp.join(",");
+				};
+				
+				btn[1].onclick=function(){
+					temp=getArray(oDiv[0].innerHTML);
+					b2  ? (temp.pop(), this.value=this.value.replace("删除","添加"), b2=false)
+						: (temp.push("December(12)"), this.value=this.value.replace("添加","删除"), b2=true);
+					oDiv[0].innerHTML=temp.join(",");
+				};
+				
+				btn[2].onclick=function(){
+					temp=getArray(oDiv[1].innerHTML);
+					//因为div中可能前后有空白符，所以用replace把整个字符串全部的空白\s替换为空字符串
+					//concat用来连接两个数组合为一个
+					oDiv[1].innerHTML=temp.concat(temp).toString().replace(/\s/g,"");
+				};
+				btn[3].onclick=function(){
+					temp=getArray(oDiv[1].innerHTML);
+					temp.length=10;//利用length属性来截断数组
+					oDiv[1].innerHTML=temp.join(",");
+				};
+				btn[4].onclick=function(){
+					temp=["red","green","blue","white","yellow","black","brown"];
+					oDiv[2].innerHTML=temp.join(",");
+				};
+				btn[5].onclick=function(){
+					temp=getArray(oDiv[2].innerHTML);
+					temp.splice(0,3);
+					oDiv[2].innerHTML=temp.join(",");
+				};
+				btn[6].onclick=function(){
+					temp=getArray(oDiv[2].innerHTML);
+					temp.splice(1,2);
+					oDiv[2].innerHTML=temp.join(",");
+				};
+				btn[7].onclick=function(){
+					temp=getArray(oDiv[2].innerHTML);
+					temp.splice(2,0,"orange","purple");
+					oDiv[2].innerHTML=temp.join(",");
+				};
+				btn[8].onclick=function(){
+					temp=getArray(oDiv[2].innerHTML);
+					temp.splice(1,2,"blue","green");
+					oDiv[2].innerHTML=temp.join(",");
+				};
+			};
+		</script>
+	</head>
+	<body>
+		<div>	
+			January(1),February(2),March(3),April(4),May(5),June(6),
+			July(7),Aguest(8),September(9),October(10),November(11),December(12)
+		</div>
+		<input type="button" value="删除January(1)">
+		<input type="button" value="删除December(12)">
+		
+		<div>
+			0,1,2,3,4,5,6,7,8,9
+		</div>
+		<input type="button" value="复制">
+		<input type="button" value="还原">
+		
+		<div>
+			red,green,blue,white,yellow,black,brown
+		</div>
+		<input type="button" value="还原">
+		<input type="button" value="删除前三项">
+		<input type="button" value="删除第二至第三项">
+		<input type="button" value="在第二项后插入(orange,purple)">
+		<input type="button" value="替换第二项和第三项">
+	</body>
+</html>
