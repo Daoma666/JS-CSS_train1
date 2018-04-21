@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>星级评分系统</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				font: 12px/1.5em "Arial";
+				background: #eee;
+			}
+			#star{
+				width: 800px;
+				margin: 20px auto;
+				position: relative;
+			}
+			#star span,#star ul{
+				float: left;
+				display: inline;
+				height: 19px;
+				line-height: 19px;
+			}
+			#star ul{
+				list-style-type: none;
+				margin: 0 10px;
+			}
+			#star li{
+				width: 24px;
+				float: left;
+				cursor: pointer;
+				text-indent: -9999px;
+				background: url(img/star.png) no-repeat;
+			}
+			#star li.on{
+				background-position: 0 -29px;
+			}
+			#star span strong{
+				color: #FF6600;
+			}
+			#star p{
+				position: absolute;
+				top: 22px;
+				width: 159px;
+				height: 60px;
+				background: url(img/icon.gif) no-repeat;
+				padding: 7px 10px 0;
+				/*又在秀操作，因为背景图片默认从padding-box外边缘显示,所以原图像179*67，添加一下padding让它完全显示*/
+			}
+			#star p em{
+				color: #f60;
+				display: block;
+				font-style: normal;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="star">
+			<span>点击星星就能打分</span>
+			<ul>
+				<li class=""><a href="javascript:;">1</a></li>
+				<li class=""><a href="javascript:;">2</a></li>
+				<li class=""><a href="javascript:;">3</a></li>
+				<li class=""><a href="javascript:;">4</a></li>
+				<li class=""><a href="javascript:;">5</a></li>
+			</ul>
+			<span>
+				<strong></strong>
+			</span>
+			<p style="display: none;">
+				<em><b></b></em>
+			</p>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var aMsg=["很不满意|差得太离谱，与卖家描述的严重不符，非常不满",
+				  "不满意|部分有破损，与卖家描述的不符，不满意",
+				  "一般|质量一般，没有卖家描述的那么好",
+		 		  "满意|质量不错，与卖家描述的基本一致，还是挺满意的",
+				  "非常满意|质量非常好，与卖家描述的完全一致，非常满意"];
+		var oLi=document.getElementsByTagName("LI");
+		var oUl=document.getElementsByTagName("UL")[0];
+		var oSpan=document.getElementsByTagName("SPAN")[1];
+		var oP=document.getElementsByTagName("P")[0];
+		var i=iScore=iStar=0;
+		for(i=1;i<=oLi.length;i++){
+			//先保存分数
+			oLi[i-1].index=i;
+			//鼠标移过显示分数
+			oLi[i-1].onmouseover=function(){
+				fnPoint(this.index);
+				oP.style.display="block";
+				/*offsetLeft
+				 * （1）.如果父辈元素中有定位的元素，那么就返回距离当前元素最近的定位元素边缘的距离。
+				 * （2）.如果父辈元素中没有定位元素，那么就返回相对于body左边缘距离。
+				 *  所以这里的oLi[0].offsetLeft相对于设置了relative的#star层
+				 */
+				oP.style.left=oLi[0].offsetLeft+this.index*this.offsetWidth-104+"px";
+				//match()如果没有设置全局标志 (g)，数组的0元素包含整个匹配，而第 1 到 n 元素包含了匹配中曾出现过的任一个子匹配。
+				oP.innerHTML="<em><b>"+this.index+"</b>分"+aMsg[this.index-1].match(/(.+)\|/)[1]
+				+"</em>"+aMsg[this.index-1].match(/\|(.+)/)[1];
+			};
+			oLi[i-1].onclick=function(){
+				iStar=this.index;
+				oP.style.display="none";
+				oSpan.innerHTML="<strong>"+iStar+"分</strong>("+aMsg[this.index-1].match(/\|(.+)/)[1]+")";
+			};
+			oLi[i-1].onmouseout=function(){
+				fnPoint();
+				oP.style.display="none";
+			};
+		}
+		
+		function fnPoint(point){
+			//当鼠标移出的时候，point没有赋值，则显示之前click的星星数
+			iScore= point || iStar;
+			//把鼠标移到的星星和它前面的星星都点亮
+			for(i=0;i<oLi.length;i++){
+				oLi[i].className= i<iScore ? "on" : "";
+			}
+		}
+	</script>
+</html>

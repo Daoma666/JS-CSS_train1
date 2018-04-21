@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>阻止右键菜单（阻止默认事件）</title>
+	</head>
+	<style type="text/css">
+		body{
+			font: 16px/1.5em Arial;
+			text-align: center;
+		}
+		pre{
+			background: #eee;
+			color: #008000;
+			padding: 10px;
+			border: 1px solid #333;
+			text-align: left;
+		}
+	</style>
+	<body>
+		<pre>
+&lt;script type="text/javascript"&gt;
+//※oncontextmenu
+document.oncontextmenu = function ()
+{
+	return false
+}
+&lt;/script&gt;</pre>
+	</body>
+	<script type="text/javascript">
+		document.oncontextmenu=function(event){
+			event= event ? event : window.event;
+			/*下面这三种方法都阔以啊*/
+//			event.preventDefault();
+//			event.returnValue=false;
+			return false;
+		}
+	</script>
+</html>

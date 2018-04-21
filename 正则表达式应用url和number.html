@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	<pre>
+<script type="text/javascript">
+		//匹配网页的URL
+//		var parse_url=/^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+//		var url="http://Daoma666.github.io:80/goodparts?q#fragment";
+//		var result=parse_url.exec(url);
+//		var names=["url","scheme","slash","host","port","path","query","hash"];
+//		var i;
+//		for(i=0;i<names.length;i++){
+//			document.writeln(names[i]+":  "+result[i]);
+//		}
+		//匹配一个数字
+		var parse_number=/^-?\d+(?:\.\d*)?(?:e[+\-]?\d+)?$/i;
+		var test=function(num){
+			document.writeln(parse_number.test(num));
+		};
+		test("1");
+		test("number");
+		test("98.6");
+		test("123.21.55.6");
+		test("132.45E-10");
+		test("-123.78D8");
+</script>
+	</pre>
+	</body>
+	
+</html>

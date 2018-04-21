@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>使用旧版本Flex制作自适应三列等高布局</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				/*这样增加padding和border就不会撑破元素的盒子*/
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				box-sizing: border-box;
+			}
+			html,body{
+				height: 100%;
+			}
+			body{
+				width: 100%;
+				display: -moz-box;
+				display: -webkit-box;
+				-moz-box-orient: vertical;
+				-webkit-box-orient: vertical;
+			}
+			#header,#footer{
+				width: 100%;
+				padding: 10px;
+				background-color: #ccc;
+			}
+			#sidebar-left,#sidebar-right{
+				width: 220px;
+				padding: 10px;
+				background-color: #f36;
+			}
+			#sidebar-right{
+				/*这个属性默认值是1，所以左边栏就不用写了*/
+				-moz-box-ordinal-group: 3;
+				-webkit-box-ordinal-group: 3;
+			}
+			#main{
+				background-color: #e66;
+				padding: 10px;
+				margin: 0 10px;
+				/*没设置左右sidebar的这个属性，则代表把额外的空间全部分给main*/
+				-moz-box-flex: 1;
+				-webkit-box-flex: 1;
+				
+				-moz-box-ordinal-group: 2;
+				-webkit-box-ordinal-group: 2;
+			}
+			#page{
+				width: 100%;
+				display: -moz-box;
+				display: -webkit-box;
+				/*下面这是相对于body的伸缩容器，page自己既是一个伸缩容器，又是body的*/
+				-moz-box-flex: 1;
+				-webkit-box-flex: 1;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="header">
+			<h1>Header</h1>
+		</div>
+		<div id="page">
+			<div id="main">
+				<h1>主内容</h1>
+			</div>
+			<div id="sidebar-left">
+				<h1>左边栏</h1>
+			</div>
+			<div id="sidebar-right">
+				<h1>右边栏</h1>
+			</div>
+		</div>
+		<div id="footer">
+			<p>我是页面页脚</p>
+		</div>
+	</body>
+</html>
