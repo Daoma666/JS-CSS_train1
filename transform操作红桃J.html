@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			html,
+			body{
+				height: 100%;
+			}
+			body{
+				/*画横线*/
+				background: repeating-linear-gradient(#f9f9f9,#f9f9f9 19px,#ccc 20px);
+				position: relative;
+				background-size: 100% 20px;
+			}
+			body::before{
+				content: "";
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				/*画竖线*/
+				background: repeating-linear-gradient(to right,#f9f9f9,#f9f9f9 19px,#ccc 20px);
+				background-size: 20px 100%;
+				opacity: .5;/*因为是absolute脱离文档流显示在上层的，所以需要改变透明度映出下层的横线们*/
+			}
+			div{
+				width: 142px;
+				height: 200px;
+				margin: 100px auto;/*最顶部出来的一行空白就是这里弄的*/
+				position: relative;
+				/*transform-style: preserve-3d;*/
+			}
+			
+			div img{
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			div img:nth-child(1){
+				opacity: 1.0;
+				z-index: 1;
+				transform: scale(.5) rotate(0deg);
+			}
+			div img:nth-child(2){
+				opacity: .9;
+				z-index: 2;
+				transform: scale(.8) rotate(60deg);
+			}
+			div img:nth-child(3){
+				opacity: .8;
+				z-index: 3;
+				transform: scale(1.1) rotate(120deg);
+			}
+			div img:nth-child(4){
+				opacity: .7;
+				z-index: 4;
+				transform: scale(1.4) rotate(180deg);
+			}
+			div img:nth-child(5){
+				opacity: .6;
+				z-index: 5;
+				transform: scale(1.7) rotate(240deg);
+			}
+			div img:nth-child(6){
+				opacity: .5;
+				z-index: 6;
+				transform: scale(2.0) rotate(300deg);
+			}
+			div img:nth-child(7){
+				opacity: .4;
+				z-index: 7;
+				transform: scale(2.3) rotate(360deg);
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<img src="img/cardjfront.png" alt="" width="142" height="200" />
+			<img style="display: none;" src="img/cardjfront.png" alt="" width="142" height="200" />
+			<img style="display: none;" src="img/cardjfront.png" alt="" width="142" height="200" />
+			<img style="display: none;" src="img/cardjfront.png" alt="" width="142" height="200" />
+			<img style="display: none;" src="img/cardjfront.png" alt="" width="142" height="200" />
+			<img style="display: none;" src="img/cardjfront.png" alt="" width="142" height="200" />
+			<img style="display: none;" src="img/cardjfront.png" alt="" width="142" height="200" />
+		</div>
+	</body>
+	<script type="text/javascript">
+		var images=document.getElementsByTagName("img");
+		var length=images.length-1;
+		var player1=player2=null;
+		images[0].onmouseover=function(){
+			var i=1;
+			player1=setInterval(function(){
+				i<=length ? (images[i].style.display = "block",i++) : clearInterval(player1);
+			},46);
+		};
+		images[length].onmouseout=function(){
+			var i=length;
+			player2=setInterval(function(){
+				i>=1 ? (images[i].style.display = "none",i--) : clearInterval(player2);
+			},46);
+		};
+	</script>
+</html>

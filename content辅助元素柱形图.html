@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.box{
+				width: 256px;
+				height: 256px;
+				border-bottom: 1px dashed #ccc;
+				text-align: justify;/*内容两端对齐*/
+				margin: 20px auto;
+			}
+			/*辅助实现底对齐*/
+			.box:before{
+				content: "";
+				display: inline-block;
+				height: 100%;
+			}
+			/*辅助实现两端对齐*/
+			.box:after{
+				content: "";
+				display: inline-block;
+				width: 100%;
+			}
+			.bar{
+				display: inline-block;
+				width: 20px;
+				height: 0;
+			}
+			p{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box" class="box"><i class="bar"></i>  <!--这里不能换行，使第一个bar顶到最左边-->
+			<i class="bar"></i>
+			<i class="bar"></i>
+			<i class="bar"></i>
+		</div>
+		<p><button id="button">再增加一条数据</button></p>
+	</body>
+	<script type="text/javascript">
+		if(document.querySelector){
+			var eleBox=document.getElementById("box");
+			//querySelector()返回指定CSS选择器元素的第1个子元素，querySelectorAll()返回所有匹配元素，这是个静态方法
+			var eleBars=document.querySelectorAll("#box > i");
+			var lenBar=eleBars.length;
+			if(eleBox && lenBar){
+				for(var i=0;i < lenBar;i++){
+					eleBars[i].style.height=Math.ceil(256*Math.random())+"px";
+					//slice(-6)浅复制出只有最后6个字符的字符串，+“”的作用是把Math.random()快速转换成一个字符串
+					eleBars[i].style.backgroundColor="#"+(Math.random()+"").slice(-6);
+				}	
+			}
+			var eleBtn=document.getElementById("button");
+			if(eleBtn && lenBar){
+				eleBtn.onclick=function(){
+					var height=Math.ceil(256*Math.random())+"px";
+					var backgroundColor="#"+(Math.random()+"").slice(-6);
+					var eleClone=eleBars[0].cloneNode();
+					eleClone.style.height=height;
+					eleClone.style.backgroundColor=backgroundColor;
+					//innerHTML不带此元素的标签，只是元素内的内容；outerHTML带标签
+					//此处的字符替换为了兼容IE8下的演示效果
+					eleBox.innerHTML=eleBox.innerHTML.replace(/I>>I/ig,"I> <I")+" "+eleClone.outerHTML;
+					//因为querySelectorAll()是个静态方法，所以长度并不会随着DOM的改变而动态改变，需要自己自增
+					lenBar+=1;
+					if(lenBar==10){
+						this.setAttribute("disabled","disabled");
+					}
+				};
+			}	
+		}
+	</script>
+</html>

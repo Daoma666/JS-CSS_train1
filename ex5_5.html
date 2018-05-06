@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>跟随鼠标移动（大图展示）</title>
+		<style type="text/css">
+			html,body{
+				overflow: hidden;/*？？如果在这里不加它，下面就会因为有margin产生跳动效果，我也没搞明白为什么*/
+			}
+			body,div,ul,li{
+				margin: 0;
+				padding: 0;
+			}
+			#small ul{
+				width: 768px;
+				height: 172px;
+				list-style-type: none;
+				margin: 20px auto;
+								
+			}
+			#small li{
+				float: left;
+				width: 170px;
+				height: 170px;
+				margin-left: 20px; 
+				border: 1px solid #ccc;
+				cursor: crosshair;
+			}
+			#small li:hover{
+				border-color: #FF6600;
+			}
+			#big{
+				display: none;
+				position: absolute;
+				width: 400px;
+				height: 400px;
+				background: #eee;
+				border: 1px solid #ccc;
+				top: 180px;			
+			}
+			#big div{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 400px;
+				height: 400px;
+				opacity: 0.5;
+				filter: alpha(opacity=50);
+				background: #fff url(img/loading.gif) 50% 50% no-repeat;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="small">
+			<ul>
+				<li><img src="img/shirt_1.jpg"></li>
+				<li><img src="img/shirt_2.jpg"></li>
+				<li><img src="img/shirt_3.jpg"></li>
+				<li><img src="img/shirt_4.jpg"></li>
+			</ul>
+		</div>
+		<div id="big">
+			<div></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var oLi=document.getElementsByTagName("LI");
+		var oBig=document.getElementById("big");
+		var oLoading=oBig.getElementsByTagName("div")[0];
+		var i=0;
+
+		for(i=0;i<oLi.length;i++){
+			oLi[i].index=i;
+			//鼠标划过，预加载图片插入容器并显示
+			oLi[i].onmouseover=function(){
+				var oImg=document.createElement("img");
+				//图片预加载(？？？不知道这里多定义一个oImg干什么，因为只用img就可以达到效果)
+				var img=new Image();
+				img.src=oImg.src=oLi[this.index].getElementsByTagName("IMG")[0].src.replace(".jpg","_big.jpg");
+				//插入大图片
+				oBig.appendChild(oImg);
+				oBig.style.display=oLoading.style.display="block";
+				img.complete ? oLoading.style.display = "none" : oImg.onload=function(){
+					oLoading.style.display="none";
+				}
+			};
+			//鼠标移出，删除大图并隐藏大图容器
+			oLi[i].onmouseout=function(){
+				oBig.style.display="none";
+				oBig.removeChild(oBig.lastChild);
+			};
+			//鼠标移动，大图跟随鼠标动
+			oLi[i].onmousemove=function(event){
+				var event= event || window.event;
+				var iWidth=document.documentElement.offsetWidth-event.clientX;
+				oBig.style.top=event.clientY+20+"px";
+				//如果右边屏幕窄了，就要把大图显示到鼠标左边
+				oBig.style.left=(iWidth < oBig.offsetWidth+10 ? event.clientX-oBig.offsetWidth-10 : event.clientX+10) + "px";
+			}
+		}
+	</script>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Div闪烁</title>
+		<style type="text/css">
+			#box{
+				width: 200px;
+				height: 200px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin: -100px 0 0 -100px;/*注意这样就把这个absolute层定位到屏幕中间了*/
+				color: #fff;
+				background: red;
+				cursor: pointer;
+				letter-spacing: 5px;
+				text-align: center;
+				font: 12px/200px arial;				
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box" style="display: block;">点击我就闪</div>
+	</body>
+	<script type="text/javascript">
+		var oDiv=document.getElementById("box");
+		var timer=null;
+		
+		oDiv.onclick=function(){
+			var i=0;
+			clearInterval(timer);
+			timer=setInterval(function(){
+				oDiv.style.display=i++ % 2 ? "none" : "block";
+				i>6 && (clearInterval(timer))
+			},90);
+		};
+	</script>
+</html>
