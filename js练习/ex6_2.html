@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>仿腾讯微博效果</title>
+		<style type="text/css">
+			body,div,h2,h3,ul,li,p{
+				margin: 0;
+				padding: 0;
+			}
+			a{
+				text-decoration: none;
+			}
+			a:hover{
+				text-decoration: underline;
+			}
+			ul{
+				list-style-type: none;
+			}
+			body{
+				color: #333;
+				background: #3c3a3b;
+				font: 12px/1.5 \5b8b\4f53;
+			}
+			#box{
+				width: 500px;
+				background: #fff;
+				border-radius: 5px;
+				margin: 20px auto;
+				padding-top: 10px;
+			}
+			#box form{
+				padding: 0 20px 15px;
+			}
+			#box form h2{
+				font: 400 18px/1.5 \5fae\8f6f\96c5\9ed1;
+			}
+			#box form div{
+				position: relative;
+				color: #999;
+				margin-top: 10px;
+			}
+			#box img{
+				border-radius: 3px;
+			}
+			#face{
+				position: absolute;
+				top: 0;
+				left: 186px;
+			}
+			#face img{
+				width: 30px;
+				height: 30px;
+				cursor: pointer;
+				/*margin-right: 3px;<img>之间有空格的文本元素*/
+				opacity: 0.5;
+				filter: alpha(opacity=50);
+			}
+			#face img.hover,#face img.current{
+				width: 28px;
+				height: 28px;
+				border: 1px solid #F60;
+				opacity: 1;
+				filter: alpha(opacity=100);
+			}
+			#userName,#conBox{
+				color: #777;
+				border: 1px solid #d0d0d0;
+				border-radius: 6px;
+				font: 14px/1.5 arial;
+				padding: 3px 5px;
+			}
+			#userName{
+				height: 20px;
+			}
+			#conBox{
+				width: 448px;
+				resize: none;
+				height: 65px;
+				/*overflow: auto;*/
+			}
+			#sendBtn{
+				border: 0;
+				width: 112px;
+				height: 30px;
+				cursor: pointer;
+				margin-left: 10px;
+				background: url(img/btn.png) no-repeat;
+			}
+			#sendBtn:hover{
+				background-position: 0 -30px;
+			}
+			#box form .maxNum{
+				font: 26px/30px georgia,tahoma,arial;
+				padding: 0 5px;
+			}
+			.tr{
+				overflow: hidden;
+				zoom: 1;
+			}
+			.tr p{
+				float: right;
+				line-height: 30px;
+			}
+			.tr p *{
+				float: left;
+			}
+			
+			#box .list{
+				padding: 10px;
+			}
+			#box .list img{
+				width: 50px;
+				height: 50px;
+			}
+			#box .list h3{
+				position: relative;
+				height: 33px;
+				font-size: 14px;
+				font-weight: 400;
+				background: #e3eaec;
+				border: 1px solid #d0d0d0;
+			}
+			#box .list h3 span{
+				position: absolute;
+				display: inline-block;
+				padding: 0 15px;
+				left: 6px;
+				top: 6px;
+				line-height: 28px;
+				background: #fff;	
+			}
+			#box .list ul{
+				overflow: hidden;
+				zoom: 1;
+			}
+			#box .list ul li{
+				float: left;
+				clear: both;
+				overflow: hidden;
+				width: 100%;
+				border-bottom: 1px dashed #d8d8d8;
+				padding: 10px 0;
+				background: #fff;
+			}
+			#box .list ul li:hover{
+				background: #f5f5f5;
+			}
+			#box .list ul li:hover .del{
+				display: block;/*在这里控制删除<a>标记的显隐*/
+			}
+			#box .list .userPic{
+				display: inline;
+				float: left;
+				width: 50px;
+				height: 50px;		
+				margin-left: 10px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+			}
+			#box .list .content{
+				float: left;
+				width: 400px;
+				font-size: 14px;
+				margin-left: 10px;
+				font-family: arial;
+				word-wrap: break-word;/*将文本内容在边界内换行*/
+			}
+			#box .list .userName{
+				display: inline;
+				padding-right: 5px;
+			}
+			#box .list .userName a{
+				color: #2b4a78;
+			}
+			#box .list .msgInfo{
+				display: inline;
+				word-wrap: break-word;
+			}
+			#box .list .times{
+				color: #889db6;
+				font: 12px/18px arial;
+				margin-top: 5px;
+				overflow: hidden;
+				zoom: 1;
+			}
+			#box .list .times span{
+				float: left;
+			}
+			#box .list .times a{
+				display: none;
+				float: right;
+				color: #7d838a;				
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<form>
+				<h2>仿腾讯微博聊天效果</h2>
+				<div>
+					<input id="userName" class="f-text" value>
+					<p id="face">
+						<img src="img/face1.gif" class="current">
+						<img src="img/face2.gif">
+						<img src="img/face3.gif">
+						<img src="img/face4.gif">
+						<img src="img/face5.gif">
+						<img src="img/face6.gif">
+						<img src="img/face7.gif">
+					</p>
+				</div>
+				<div>
+					<textarea id="conBox" class="f-text"></textarea>
+				</div>
+				<div class="tr">
+					<p>
+						<span class="countTxt">还能输入</span>
+						<strong class="maxNum">140</strong>
+						<span>个字</span>
+						<input id="sendBtn" type="button" value title="快捷键 Ctrl+Enter">
+					</p>
+				</div>
+			</form>
+			<div class="list">
+				<h3>
+					<span>最热评论</span>
+				</h3>
+				<ul>
+					<li>
+						<div class="userPic">
+							<img src="img/daoma.jpg">
+						</div>
+						<div class="content">
+							<div class="userName">
+								<a href="javascript:;">岛马</a>:
+							</div>
+							<div class="msgInfo">新增删除广播功能。</div>
+							<div class="times">
+								<span>07月05日 15:14</span>
+								<a href="javascript:;" class="del">删除</a>
+ 							</div>
+						</div>
+					</li>
+					<li>
+						<div class="userPic">
+							<img src="img/daoma.jpg">
+						</div>
+						<div class="content">
+							<div class="userName">
+								<a href="javascript:;">岛马</a>:
+							</div>
+							<div class="msgInfo">新增Ctrl+Enter快捷键发送广播。</div>
+							<div class="times">
+								<span>07月05日 12:20</span>
+								<a href="javascript:;" class="del">删除</a>
+ 							</div>
+						</div>
+					</li>
+					<li>
+						<div class="userPic">
+							<img src="img/daoma.jpg">
+						</div>
+						<div class="content">
+							<div class="userName">
+								<a href="javascript:;">岛马</a>:
+							</div>
+							<div class="msgInfo">新增选择头像功能。</div>
+							<div class="times">
+								<span>07月05日 12:08</span>
+								<a href="javascript:;" class="del">删除</a>
+ 							</div>
+						</div>
+					</li>
+					<li>
+						<div class="userPic">
+							<img src="img/daoma.jpg">
+						</div>
+						<div class="content">
+							<div class="userName">
+								<a href="javascript:;">岛马</a>:
+							</div>
+							<div class="msgInfo">增加了记录广播时间的功能。</div>
+							<div class="times">
+								<span>07月04日 16:55</span>
+								<a href="javascript:;" class="del">删除</a>
+ 							</div>
+						</div>
+					</li>
+					<li>
+						<div class="userPic">
+							<img src="img/daoma.jpg">
+						</div>
+						<div class="content">
+							<div class="userName">
+								<a href="javascript:;">岛马</a>:
+							</div>
+							<div class="msgInfo">增加了输入字符检测功能，英文/半角为半个字符，汉字/全角为一个字符。</div>
+							<div class="times">
+								<span>07月04日 08:30</span>
+								<a href="javascript:;" class="del">删除</a>
+ 							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//获取id,class,tagName
+		var get={
+			byId: function(id){
+				return typeof id === "string" ? document.getElementById(id) : id;
+			},
+			byTagName: function(elem,obj){
+				return (obj || document).getElementsByTagName(elem);
+			},
+			byClass: function(sClass,oParent){
+				var aClass=[];
+				var reClass=new RegExp("(^| )"+sClass+"( |$)");//|表示或，所以可以匹配" div    "前后带很多空格的类名
+				var aElem=this.byTagName("*",oParent);
+				for(var i=0;i<aElem.length;i++) reClass.test(aElem[i].className) && aClass.push(aElem[i]);
+				return aClass;
+			}
+		}
+		
+		//事件绑定，删除
+		var EventUtil={
+			addHandler: function(element,type,handler){
+				if(element.addEventListener){
+					element.addEventListener(type,handler,false);//false代表事件在冒泡阶段执行，true代表在捕获阶段
+				}else if(element.attachEvent){
+					element.attachEvent("on"+type,handler);
+				}else{
+					element["on"+type]=handler;
+				}
+			},
+			removeHandler: function(element,type,handler){
+				if(element.removeEventListener){
+					element.removeListener(type,handler,false);
+				}else if(element.attachEvent){
+					element.attachEvent("on"+type,handler);
+				}else{
+					element["on"+type]=handler;
+				}
+			},
+			addLoadHandler: function(handler){
+				this.addHandler(window,"load",handler)
+			}
+		};
+		//设置或读取CSS样式
+		function css(obj,attr,value){
+			switch(arguments.length){
+				case 2://如果有两个参数可能是设置或读取样式
+					if(typeof arguments[1] == "object"){//即attr是个对象就设置样式
+						for(var i in attr){
+							i == "opacity" ? (obj.style["filter"]="alpha(opacity="+attr[i]+")", 
+								obj.style[i]=attr[i]/100) : obj.style[i]=attr[i];		   
+						}
+					}else{//attr是个字符串就读取CSS样式
+						return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj,null)[attr]
+					}
+					break;
+				case 3://三个参数就是设置样式
+					attr == "opacity" ? (obj.style["filter"]="alpha(opacity="+value+")", 
+						obj.style[attr]=value/100) : obj.style[attr]=value;
+					break;
+			}
+		}
+		
+		EventUtil.addLoadHandler(function(){
+			var oBox=get.byId("box");
+			var oUserName=get.byId("userName");
+			var aImg=get.byTagName("img",get.byId("face"));
+			var oConBox=get.byId("conBox");
+			var oSendBtn=get.byId("sendBtn");
+			var oMaxNum=get.byClass("maxNum")[0];
+			var oCountTxt=get.byClass("countTxt")[0];
+			var oList=get.byClass("list")[0];
+			var oUl=get.byTagName("ul",oList)[0];
+			var aLi=get.byTagName("li",oUl);
+			
+			var i=0;
+			var maxNum=140;
+			var bSend=false;//表示textarea的内容已超出140字，不能发送
+			var timer=null;
+			
+			//头像边框样式
+			for(i=0;i<aImg.length;i++){
+				EventUtil.addHandler(aImg[i],"mouseover",function(){
+					this.className += "hover";
+				});
+				EventUtil.addHandler(aImg[i],"mouseout",function(){
+					this.className=this.className.replace(/\s?hover/,"");
+				});
+				EventUtil.addHandler(aImg[i],"click",function(){
+					for(i=0;i<aImg.length;i++) aImg[i].className="";
+					this.className="current";
+				});
+			}
+
+			//禁止表单提交
+			EventUtil.addHandler(get.byTagName("form",oBox)[0],"submit",function(){
+				return false;
+			});
+			
+			//为广播按钮绑定发送事件
+			EventUtil.addHandler(oSendBtn,"click",fnSend);
+			
+			//为Ctrl+Enter快捷键绑定发送事件
+			EventUtil.addHandler(document,"keyup",function(event){
+				var event=event || window.event;
+				event.ctrlKey && event.keyCode==13 && fnSend()
+			});
+			
+			//格式化时间，如果为一位数时补0
+			function format(str){
+				return str.toString().replace(/^(\d)$/,"0$1");
+			}
+			
+			//判断输入字符数
+			function confine(){
+				var iLen=0;
+				for(i=0;i<oConBox.value.length;i++){
+					//匹配不是ASCII代码中十六进制代码00到ff的字符，即不是ASCII代码十进制0到255的字符
+					//所以若是汉字就是iLen+1，普通的字符如标点符号、英文就是0.5
+					iLen+=/[^\x00-\xff]/.test(oConBox.value.charAt(i)) ? 1 : 0.5;
+					oMaxNum.innerHTML=Math.abs(maxNum-Math.floor(iLen));
+					maxNum-Math.floor(iLen)>=0 ? (css(oMaxNum,"color",""),oCountTxt.innerHTML="还能输入",bSend=true)
+						: (css(oMaxNum,"color","#f60"),oCountTxt.innerHTML="已超出",bSend=false);  
+				}
+			}
+
+			//加载即调用
+			confine();
+			
+			//事件绑定，判断字符输入
+			EventUtil.addHandler(oConBox,"keyup",confine);
+			EventUtil.addHandler(oConBox,"focus",confine);
+			EventUtil.addHandler(oConBox,"change",confine);
+
+			//发送广播函数
+			function fnSend(){
+				var reg=/^\s*$/g;
+				if(reg.test(oUserName.value)){
+					//如果为空
+					alert("请填写您的姓名");
+					oUserName.focus();
+				}else if(!/^[\u4e00-\u9fa5\w]{2,8}$/g.test(oUserName.value)){
+					//如果不是2-8个字母数字下划线或汉字
+					alert("姓名由2-8位字母、数字、下划线、汉字组成！");
+					oUserName.focus();
+				}else if(reg.test(oConBox.value)){
+					alert("随便说点什么吧！");
+					oConBox.focus();
+				}else if(!bSend){
+					alert("你输入的内容已超出限制，请检查！");
+					oConBox.focus();
+				}else{
+					var oLi=document.createElement("li");
+					var oDate=new Date();
+						/* <div class="userPic">
+							<img src="img/daoma.jpg">
+						</div>
+						<div class="content">
+							<div class="userName">
+								<a href="javascript:;">岛马</a>:
+							</div>
+							<div class="msgInfo">增加了记录广播时间的功能。</div>
+							<div class="times">
+								<span>07月04日 16:55</span>
+								<a class="del" href="javascript:;" style="display: none;">删除</a>
+ 							</div>
+						</div> */
+					oLi.innerHTML='<div class="userPic"><img src="'
+						+get.byClass("current",get.byId("face"))[0].src
+						+'"></div><div class="content"><div class="userName"><a href="javascript:;">'
+						+oUserName.value+'</a>:</div><div class="msgInfo">'
+						+oConBox.value.replace(/<[^>]*>|&nbsp;/ig,"")
+						+'</div><div class="times"><span>'+format(oDate.getMonth()+1)+"月"
+						+format(oDate.getDate())+"日 "+format(oDate.getHours())+":"+format(oDate.getMinutes())
+						+'</span><a href="javascript:;" class="del">删除</a></div></div>';
+					
+					//插入元素
+					aLi.length ? oUl.insertBefore(oLi,aLi[0]) : oUl.appendChild(oLi);
+
+					//重置表单
+					get.byTagName("form",oBox)[0].reset();
+					for(i=0;i<aImg.length;i++) aImg[i].className="";
+					aImg[0].className="current";
+
+					//运用JS改变opacity和height实现oLi的淡入淡出效果
+					//css(oLi,"paddingTop")返回的是字符串，不能和减号一起做运算，所以要转换成number类型
+					var iHeight=oLi.clientHeight-parseFloat(css(oLi,"paddingTop"))-parseFloat(css(oLi,"paddingBottom"));
+					var alpha=count=0;
+					css(oLi,{"opacity":"0","height":"0"});
+
+					timer=setInterval(function(){
+						css(oLi,{"display":"block","opacity": "0","height": (count+=8)+"px"});
+						if(count>iHeight){
+							//高度先变到正常oLi大小再淡入
+							clearInterval(timer);
+							css(oLi,"height",iHeight+"px");
+							timer=setInterval(function(){
+								css(oLi,"opacity",(alpha+=10));
+								alpha>100 && (clearInterval(timer),css(oLi,"opacity",100))
+							},30);
+						}
+					},30);
+					delLi();
+				}
+			}
+
+			//删除功能(放在函数里的原因是aA是动态的，所以封装成函数每增加一个oLi就要调用一次)
+			function delLi(){
+				var aA=get.byClass("del",oUl);
+				for(i=0;i<aA.length;i++){
+					aA[i].onclick=function(){
+						var oParent=this.parentNode.parentNode.parentNode;
+						var alpha=100;
+						var iHeight=oParent.offsetHeight;
+						timer=setInterval(function(){
+							//先淡出再减小高度
+							css(oParent,"opacity",(alpha-=10));
+							if(alpha<0){
+								clearInterval(timer);
+								timer=setInterval(function(){
+									iHeight-=10;
+									iHeight<0 && (iHeight=0);
+									css(oParent,"height",iHeight+"px");
+									iHeight == 0 && (clearInterval(timer),oUl.removeChild(oParent))
+								},30);
+							}
+						},30);
+						/* 因为在fnSend里动态增加oLi时也会调用delLi函数，如果不重置为null，就会出现给aA绑定了两次click事件，
+						会点击一下触发两次，删完了又删，则oUl.removeChild(oParent)就会报错说没找到oParent。
+						还有这里使用aA[i].onclick而不是EventUtil.addHandler(aA[i],"click")的原因是在方法调用模式下
+						this会绑定到EventUtil对象上 */
+						this.onclick=null;//当触发一次点击事件后就清除点击事件（注意不要迷糊了，第一次点击还是在的，需要触发第一次点击才会重置）
+					};
+				}
+			}
+			delLi();
+			
+			
+			
+		});
+	</script>
+</html>
