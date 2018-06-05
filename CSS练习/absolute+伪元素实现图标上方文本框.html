@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>absolute+伪元素实现图标上方文本框</title>
+    <style type="text/css">
+        div{
+            text-align: center;
+            margin: 100px auto;
+        }
+        .icon-delete{
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url(img/del.png) no-repeat center;
+            background-size: 16px;
+            font-size: 0;
+            color: transparent;
+        }
+        .tips[data-title]{
+            position: relative;
+        }
+        .tips[data-title]::before,
+        .tips[data-title]::after{
+            position: absolute;
+            left: 50%;          /*这里相对relative祖先层50%宽度*/
+            transform: translateX(-50%);  /*这里相对伪元素自身50%宽度*/
+            visibility: hidden;
+        }
+        .tips[data-title]::before{
+            content: attr(data-title);
+            top: -30px;
+            padding: 2px 10px 3px;
+            line-height: 18px;
+            border-radius: 3px;
+            background-color: #333;
+            text-align: left;
+            color: #fff;
+            font-size: 12px;
+            white-space: nowrap;    /*关键代码：让宽度表现从“包裹性”变成“最大可用宽度”*/
+        }
+        .tips[data-title]::after{
+            content: "";
+            border: 6px solid transparent;
+            border-top-color: #333;
+            top: -7px;
+        }
+        .tips[data-title]:hover::before,
+        .tips[data-title]:hover::after{
+            transition: visibility .1s;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <a href="javascript:;" class="icon-delete tips" data-title="删除">删除</a>
+    </div>
+</body>
+<script>
+   
+</script>
+</html>
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>锚点实现切换图层</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-thumb{
+            background-color: rgba(0,0,0,0.3);
+            border-radius: 6px;
+        }
+        ::-webkit-scrollbar-track{
+            background-color: #ddd;
+            border-radius: 6px;
+        }
+        .box{
+            width: 20em;
+            height: 200px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 1px solid;
+        }
+        .list{
+            height: 100%;
+            background: #ddd;
+            position: relative;
+            text-align: center;
+            font-size: 8em;
+            line-height: 200px;
+        }
+        .list>input{
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            clip: rect(0 0 0 0);
+        }
+        #one{
+            background: red;
+        }
+        #two{
+            background: blue;
+        }
+        #three{
+            background: forestgreen;
+        }
+        #four{
+            background: orange;
+        }
+        .link{
+            width: 20em;
+            margin: 10px auto;
+            text-align: center;
+        }
+        .click{
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            color: #000;
+            text-decoration: none;
+            background: rgb(243, 180, 62);
+            line-height: 30px;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>  
+    <div class="box">
+        <div class="list"><input id="one">1</div>
+        <div class="list"><input id="two">2</div>
+        <div class="list"><input id="three">3</div>
+        <div class="list"><input id="four">4</div>
+    </div>
+    <div class="link">
+        <label class="click" for="one">1</label>
+        <label class="click" for="two">2</label>
+        <label class="click" for="three">3</label>
+        <label class="click" for="four">4</label>
+    </div>
+</body>
+</html>
