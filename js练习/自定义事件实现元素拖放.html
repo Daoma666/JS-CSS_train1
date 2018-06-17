@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html{
+            margin: 0;
+            padding: 0;
+        }
+        .demo{
+            text-align: center;
+            margin-top: 50px;
+            white-space: nowrap;
+        }
+        .search-box{
+            display: inline-block;
+        }
+        .search-input{
+            width: 260px;
+            height: 22px;
+            line-height: 22px;
+            padding: 9px 6px;
+            vertical-align: top;
+        }
+        a{
+            color:blue;
+            text-decoration: none;
+        }
+        .search-btn{
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            border: 10px solid #fff;
+            text-indent: -9em;
+            overflow: hidden;
+            margin: 2px 0 0 -42px;
+            background: url(img/del.png) no-repeat center;
+        }
+        .search-result{
+            /* display: none; */
+        }
+
+        .search-datalist{
+            position: absolute;
+            width: 274px;
+            border: 1px solid #ccc;
+            background: #fff;
+            text-align: left;
+        }
+        .search-datalist a{
+            display: block;
+            line-height: 36px;
+            padding-left: 20px;
+            color: #666;
+        }
+        .search-datalist a:hover{
+            background: #ccc;
+        }
+        #myDiv{
+            width: 100px;
+            height: 100px;
+            background: rgb(2, 18, 246);
+            position: absolute;
+            border: 1px solid #00f;
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo">
+        <div class="search-box">
+            <input class="search-input" placeholder="搜索">
+            <a href="#" class="search-btn">搜索</a>
+            <div class="search-result">
+                <div class="search-datalist">
+                    <a href>搜索结果1</a>
+                    <a href>搜索结果2</a>
+                    <a href>搜索结果3</a>
+                    <a href>搜索结果4</a>
+                    <a href>搜索结果5</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="myDiv" class="drag"></div>
+</body>
+<script>
+    /*
+        运用“观察者模式”，主体先创建一个管理事件的对象，
+        然后主体发布事件addHandler供观察者来订阅，之后观察者不论何时就可以触发这些事件
+        然后通过DOM自带的addEventListener事件处理函数中传入自定义的handleEvent函数，
+        这样当鼠标按下移动抬起时就会在handleEvent函数中触发自定义事件
+    */
+    function EventTarget(){
+        this.handlers={};
+    }
+    EventTarget.prototype={
+        constructor: EventTarget,
+        addHandler: function(type,handler){
+            if(typeof this.handlers[type] == 'undefined'){
+                this.handlers[type]=[];
+            }
+            this.handlers[type].push(handler);
+        },
+        fire: function(event){
+            if(!event.target){
+                event.target=this;
+            }
+            if(this.handlers[event.type] instanceof Array){
+                var handlers=this.handlers[event.type];
+                for(var i=0,len=handlers.length;i<len;i++){
+                    handlers[i](event);
+                }
+            }
+        },
+        removeHandler: function(type,handler){
+            if(this.handlers[type] instanceof Array){
+                var handlers=this.handlers[type];
+                for(var i=0,len=handlers.length;i<len;i++){
+                    if(handlers[i] === handler){
+                        break;
+                    }
+                }
+                handlers.splice(i,1);
+            }
+        }
+    };
+
+    var DragDrop=function(){
+        var dragdrop=new EventTarget(),
+            dragging=null,
+            diffX=0,
+            diffY=0;
+
+        function handleEvent(event){
+            event=window.event || event;
+            var target=event.target;
+            switch(event.type){
+                case "mousedown":
+                    if(target.className.indexOf('drag')>-1){
+                        //指定了class属性名为drag的HTML元素才能被拖放
+                        dragging=target;
+                        diffX=event.clientX-target.offsetLeft;
+                        diffY=event.clientY-target.offsetTop;
+                        //观察者触发自定义事件
+                        dragdrop.fire({type: 'dragstart', target: dragging,
+                            x: event.clientX, y: event.clientY});                        
+                    }
+                    break;
+                case "mousemove":
+                    if(dragging!==null){
+                        var oX=event.clientX-diffX,     //完美拖拽
+                            oY=event.clientY-diffY,
+                            maxX=document.documentElement.clientWidth-dragging.offsetWidth,
+                            maxY=document.documentElement.clientHeight-dragging.offsetHeight;
+                        if(oX<0) oX=0;
+                        if(oY<0) oY=0;
+                        if(oX>maxX) oX=maxX;
+                        if(oY>maxY) oY=maxY;
+                        dragging.style.left=oX+"px";
+                        dragging.style.top=oY+"px";
+                    }
+                    dragdrop.fire({type: 'drag', target: dragging,
+                        x: event.clientX, y: event.clientY});
+                    break;
+                case "mouseup":
+                    dragging=null;
+                    dragdrop.fire({type: 'dragend', target: dragging,
+                        x: event.clientX, y: event.clientY});
+                    break;
+            }
+
+        }
+        dragdrop.enable=function(){
+            document.addEventListener("mousedown",handleEvent);
+            document.addEventListener("mousemove",handleEvent);
+            document.addEventListener("mouseup",handleEvent);
+        };
+        dragdrop.disable=function(){
+            document.removeEventListener("mousedown",handleEvent);
+            document.removeEventListener("mousemove",handleEvent);
+            document.removeEventListener("mouseup",handleEvent);
+        }
+        return dragdrop;
+    }();
+
+    //激活DOM2级鼠标按下、移动、抬起事件
+    DragDrop.enable();
+
+    //主体发布自定义事件，供之后观察者触发
+    DragDrop.addHandler('dragstart',function(event){
+        var status=document.getElementById('myDiv');
+        status.innerHTML="开始拖放： "+event.target.id;
+    });
+
+    DragDrop.addHandler('drag',function(event){
+        var status=document.getElementById('myDiv');
+        status.innerHTML=event.target.id+"正在拖放：("+event.x+" , "+event.y+")";
+    });
+
+    DragDrop.addHandler('dragend',function(event){
+        var status=document.getElementById('myDiv');
+        status.innerHTML=event.target.id+"最终拖放到：("+event.x+" , "+event.y+")";
+    });
+</script>
+</html>

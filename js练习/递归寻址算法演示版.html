@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>寻址-最短路径</title>
+		<link rel="shortcut icon" href="/public/img/favicon.png">
+		<style type="text/css">
+			body{
+				font-size:12px;
+				font-family: "Microsoft Yahei",Arial,Helvetica;
+			}
+			button,input{
+				font-family: "Microsoft Yahei",Arial,Helvetica;
+			}
+			.container{
+				width:1200px;
+				margin:60px auto 0;
+				border:1px solid #ccc;
+			}
+			.container .box{
+				border-bottom:1px solid #ccc;
+			}
+			.container canvas{
+				vertical-align: bottom;
+			}
+			.container .panel{
+				position:relative;
+				padding:10px 20px;
+			}
+			.container .panel .right{
+				position:absolute;
+				top:10px;
+				right:20px;
+			}
+			.container .panel input{
+				text-align:center;
+			}
+			.copy{
+				width:1200px;
+				margin:10px auto 0;
+				text-align:center;
+				font-size: 18px;
+				color:#666;
+			}
+			.copy a{
+				color:#666;
+				text-decoration:none;
+			}
+			.copy a:hover{
+				text-decoration:underline;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="box">
+				<canvas id="canvas" width="1200" height="600"></canvas>
+			</div>
+			<div class="panel">
+				<div class="left">
+					<button id="start">起点</button>
+					<button id="end">终点</button>
+					<button id="pen">画笔</button>
+					<button id="eraser">橡皮</button>
+				</div>
+				<div class="right">
+					当前操作:<input id="type" type="text" value="终点" readonly/>
+					<button id="find">寻找</button>
+				</div>
+			</div>
+		</div>
+		<div class="copy">
+			&copy;岛马——2018
+		</div>
+		<script type="text/javascript">
+			(function(){
+				var $canvas = document.getElementById("canvas");
+				var $pen = document.getElementById("pen");
+				var $eraser = document.getElementById("eraser");
+				var $find = document.getElementById("find");
+				var $start = document.getElementById("start");
+				var $end = document.getElementById("end");
+				var $type = document.getElementById("type");
+				var context = $canvas.getContext("2d");
+				var unit = 10;		//地图单位正方形区域宽度
+				var width = $canvas.width/unit;		//1200/10=120
+				var height = $canvas.height/unit;	//600/10=60
+				var map = [];		//canvas地图
+				var start = [0,0];
+				var end = [0,0];
+				var path = "";		//
+				var isMouseDown = false;
+				var type = "end";
+				var type_text = {"end":"终点","start":"起点","pen":"画笔","eraser":"橡皮"};
+				var scroll = getScroll();
+				for(var x=0;x<width;x++){
+					//这样建出来就是从左到右第x列，从上到下第y行
+					map[x] = new Array(height);		//一列列
+					for(var y =0;y<height;y++){
+						map[x][y] = 0;				//每一列从上到下的元素
+					}
+				}
+				$canvas.onmousedown = function(e){
+					isMouseDown = true;
+					//得到鼠标（起点终点小方块）在canvas中的位置
+					var x = Math.floor((e.clientX - this.offsetLeft+scroll.left)/unit);
+					var y = Math.floor((e.clientY - this.offsetTop+scroll.top)/unit);
+					if(type == "start"){
+						start = [x,y];
+						draw();
+					}else if(type == "end"){
+						end = [x,y];
+						draw();
+					}else if(type == "pen"&&!map[x][y]){
+						//这里只有用pen画线才会使map[x][y]=1
+						map[x][y] = 1;
+						draw();
+					}else if(type == "eraser"&map[x][y]){
+						map[x][y] = 0;
+						draw();
+					}
+				};
+				$canvas.onmousemove = function(e){
+					if(isMouseDown){
+						var x = Math.floor((e.clientX - this.offsetLeft+scroll.left)/unit);
+						var y = Math.floor((e.clientY - this.offsetTop+scroll.top)/unit);
+						if(type == "start"){
+							start = [x,y];
+							draw();
+						}else if(type == "end"){
+							end = [x,y];
+							draw();
+						}else if(type == "pen"&&!map[x][y]){
+							map[x][y] = 1;
+							draw();
+						}else if(type == "eraser"&map[x][y]){
+							map[x][y] = 0;
+							draw();
+						}
+					}
+				};
+				$canvas.onmouseup = function(e){
+					isMouseDown = false;
+				};
+				$pen.onclick = function(){
+					type = "pen";
+					$type.value = type_text[type];
+				};
+				$eraser.onclick = function(){
+					type = "eraser";
+					$type.value = type_text[type];
+				};
+				$start.onclick = function(){
+					type = "start";
+					$type.value = type_text[type];
+				};
+				$end.onclick = function(){
+					type = "end";
+					$type.value = type_text[type];
+				};
+/*
+	console.time和console.timeEnd这两个方法可以用来
+	让WEB开发人员测量在它们之间的
+	javascript脚本程序执行消耗的时间
+	这两个方法中都可以传人一个参数，作为计时器的名称，它的作用是在代码并行运行时分清楚各个计时器。
+	对console.timeEnd的调用会立即输出执行总共消耗的时间，单位是毫秒。
+*/				
+				$find.onclick = function(){
+					console.time('t');
+					path = '|'+finder({'map':map,'start':start,'end':end}).join('|')+'|';
+					console.timeEnd('t');
+					draw();	
+				}
+				window.onscroll = function(){
+					scroll = getScroll();
+				};
+				draw();
+				function draw(){
+					context.fillStyle = "#fff";
+					context.fillRect(0, 0, $canvas.width, $canvas.width);
+					for(var x=0; x<width; x++){
+						for(var y=0; y<height; y++){
+							if(x==start[0]&&y==start[1]||x==end[0]&&y==end[1]){
+								//如果绘制的点在起点终点位置，且被pen画线了，就是#ccc灰色，要是没被画线就蓝色
+								context.fillStyle=map[x][y]?"#ccc":"#00f";
+								context.fillRect(x*unit,y*unit,unit,unit);
+							}else if(map[x][y]){
+								//用pen画线画过的地方是黑色
+								context.fillStyle="#000";
+								context.fillRect(x*unit,y*unit,unit,unit);
+							}else if(path.indexOf('|'+x+','+y+'|')>-1){	
+								//寻找出来的线路是红色
+								context.fillStyle="#f00";
+								context.fillRect(x*unit,y*unit,unit,unit);
+							}
+						}
+					}
+				}
+			})();
+			function getScroll() {
+				//得到页面相对浏览器窗口左上角水平和垂直方向滚动的像素
+				var scrollPos={};  
+				if (window.pageYOffset||window.pageXOffset) {
+					//IE9+  
+					scrollPos['top'] = window.pageYOffset;
+					scrollPos['left'] = window.pageXOffset;
+				}else if (document.compatMode && document.compatMode != 'BackCompat'){
+					//IE8-
+					scrollPos['top'] = document.documentElement.scrollTop;
+					scrollPos['left'] = document.documentElement.scrollLeft;
+				}else if(document.body){
+					scrollPos['top'] = document.body.scrollTop;
+					scrollPos['left'] = document.body.scrollLeft;
+				}   
+				return scrollPos;   
+			}
+			function finder(param){ //获取最短路径param传入一个对象{map:,start:,end:}
+				var defaults = {
+					map :[],
+					start:[0,0],
+					end:[0,0]
+				};
+				var options = (function(target, params) {
+				   for (var prop in params) {  
+						target[prop] = params[prop];
+				   }      
+				   return target;
+				   //用params对象的信息更新defaults的信息，并把最终的信息对象赋给options
+				})(defaults,param);
+
+				var result = [];
+
+				if(options.map[options.start[0]][options.start[1]]||options.map[options.end[0]][options.end[1]]){
+					//当起点或终点被pen给画在线上了，即此时的起点或终点是#ccc灰色
+					return [];
+				}
+				var finded = false;
+
+				var length_x  = options.map.length;		//得到了多少列
+				var steps = new Array(length_x); 		//步骤的映射，每一个点存储了是从哪个点过来的，即前一个点的位置
+				for(var x=length_x;x--;){
+					//风骚的操作，判断循环的条件会--,这样就相当于创建了一个和map一样的二级数组，也是从0~length_x-1		
+					var length_y = options.map[x].length;
+					steps[x] = new Array(length_y);
+					for(var y=length_y;y--;){
+						steps[x][y] = 0;
+					}
+				}
+				(function(list){
+					var new_list = [];
+					var next = function(from,to){
+						var x = to[0],y = to[1];
+						if(typeof steps[x]!= 'undefined'&&typeof steps[x][y] != 'undefined'&&!options.map[x][y]&&!finded){	
+							//to要去的位置点在游戏区域内且不是pen画的线（墙）
+							if(x==options.end[0]&&y==options.end[1]){
+								//当前点就是结束点的话
+								steps[x][y] = from;		//步骤映射存储前一个点的信息
+								finded = true;
+							}else if(!steps[x][y]){
+								//这个点没有设置过步骤映射的话
+								steps[x][y] = from;
+								new_list.push(to);
+							}
+						}
+					};				
+					for(var i=0,len=list.length;i<len;i++){
+						var current = list[i];
+						var x = current[0],y=current[1];
+						next(current,[x+1,y]);	//向右
+						next(current,[x,y+1]);	//向下
+						next(current,[x-1,y]);	//向左
+						next(current,[x,y-1]);	//向上
+					}
+					if(!finded&&new_list.length){
+						arguments.callee(new_list);		//递归
+					}
+				})([options.start]);
+				if(finded){
+					var current=options.end;
+					while(current[0]!=options.start[0]||current[1]!=options.start[1]){
+						result.unshift(current);	//往数组头部添加current
+/*	current得到的是从结束点开始的步骤映射，
+	因为步骤映射steps里存储了from，
+	即得到每一个点是从哪一个点过来的.*/	
+						current=steps[current[0]][current[1]];		
+					}
+				}
+				return result;
+			}
+		</script>
+	</body>
+</html>
